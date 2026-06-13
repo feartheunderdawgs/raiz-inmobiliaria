@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paseos Cibeles — Raíz Inmobiliaria</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --verde: #4a5c2a; --verde-claro: #6b7f3e;
+      --dorado: #c8a84b; --beige: #b0a898;
+      --beige-claro: #f5f2ee; --gris: #2c2c2c; --blanco: #ffffff;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--beige-claro); color: var(--gris); }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 60px;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+    }
+    .nav-logo img { height: 48px; object-fit: contain; display: block; }
+    .nav-logo-fallback {
+      font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700;
+      color: var(--verde); letter-spacing: 1px;
+    }
+    .nav-logo-fallback span { color: var(--dorado); }
+    .nav-back {
+      display: flex; align-items: center; gap: 8px;
+      text-decoration: none; font-size: 14px; font-weight: 500;
+      color: var(--verde); transition: gap 0.2s;
+    }
+    .nav-back:hover { gap: 12px; }
+    .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+    .nav-links a {
+      text-decoration: none; font-size: 14px; font-weight: 500;
+      color: var(--gris); transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--verde); }
+    .nav-cta {
+      background: var(--verde); color: var(--blanco) !important;
+      padding: 10px 20px; border-radius: 6px;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: flex; align-items: flex-end;
+      position: relative; overflow: hidden;
+      background: linear-gradient(135deg, var(--verde) 0%, #1a2e0d 100%);
+    }
+    .hero-img {
+      position: absolute; inset: 0;
+    }
+    .hero-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.45;
+    }
+    .hero-grad {
+      position: absolute; inset: 0;
+      background: linear-gradient(0deg, rgba(8,16,4,0.92) 0%, rgba(8,16,4,0.3) 60%, transparent 100%);
+    }
+    .hero-content {
+      position: relative; padding: 0 60px 72px; max-width: 800px; z-index: 2;
+    }
+    .hero-breadcrumb {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: rgba(255,255,255,0.45);
+      margin-bottom: 24px; letter-spacing: 0.5px;
+    }
+    .hero-breadcrumb a { color: rgba(255,255,255,0.45); text-decoration: none; }
+    .hero-breadcrumb a:hover { color: var(--dorado); }
+    .hero-tag {
+      display: inline-block; background: rgba(200,168,75,0.2);
+      border: 1px solid rgba(200,168,75,0.4); color: var(--dorado);
+      font-size: 12px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+      padding: 7px 18px; border-radius: 50px; margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(44px, 7vw, 82px); font-weight: 700;
+      color: var(--blanco); line-height: 1.05; margin-bottom: 20px;
+    }
+    .hero h1 em { font-style: italic; color: var(--dorado); }
+    .hero p {
+      font-size: 18px; color: rgba(255,255,255,0.65);
+      line-height: 1.7; max-width: 560px; margin-bottom: 36px;
+    }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--dorado); color: var(--gris);
+      padding: 15px 34px; border-radius: 8px; font-weight: 600; font-size: 15px;
+      text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; display: inline-block;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,168,75,0.4); }
+    .btn-ghost {
+      background: transparent; color: rgba(255,255,255,0.8);
+      padding: 15px 34px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.25);
+      font-size: 15px; text-decoration: none; transition: background 0.2s; display: inline-block;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.08); }
+
+    /* STATS */
+    .stats {
+      background: var(--blanco); padding: 52px 60px;
+      display: flex; justify-content: center; gap: 80px; flex-wrap: wrap;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 700; color: var(--verde); }
+    .stat-label { font-size: 12px; color: var(--beige); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+
+    /* SECTION HEADER */
+    .section-header { text-align: center; margin-bottom: 52px; }
+    .section-tag { font-size: 12px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--dorado); margin-bottom: 12px; display: block; }
+    .section-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(28px, 4vw, 44px); color: var(--verde); font-weight: 700; }
+    .section-header p { margin-top: 14px; color: #888; font-size: 16px; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.65; }
+
+    /* GALERÍA */
+    .galeria { padding: 90px 0 0; background: var(--beige-claro); }
+    .galeria-header { text-align: center; padding: 0 60px; margin-bottom: 44px; }
+    .galeria-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(28px, 4vw, 44px); color: var(--verde); font-weight: 700; }
+    .galeria-header p { margin-top: 14px; color: #888; font-size: 16px; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.65; }
+
+    .slider-wrapper { position: relative; overflow: hidden; }
+    .slider-track { display: flex; transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .slide { min-width: 100%; height: 540px; position: relative; overflow: hidden; }
+    .slide img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 8s ease; }
+    .slide:hover img { transform: scale(1.03); }
+    .slide-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 60px 60px 36px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.5));
+      color: white;
+    }
+    .slide-caption h3 { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 600; margin-bottom: 6px; }
+    .slide-caption p { font-size: 14px; opacity: 0.7; }
+    .slider-arrows {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 100%; display: flex; justify-content: space-between;
+      padding: 0 20px; pointer-events: none; z-index: 5;
+    }
+    .slider-arrow {
+      pointer-events: all; background: rgba(255,255,255,0.85);
+      border: none; width: 46px; height: 46px; border-radius: 50%;
+      font-size: 20px; cursor: pointer; display: flex; align-items: center;
+      justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      transition: background 0.2s, transform 0.2s;
+    }
+    .slider-arrow:hover { background: white; transform: scale(1.08); }
+    .slider-nav { display: flex; justify-content: center; gap: 10px; padding: 22px 0; background: var(--beige-claro); }
+    .slider-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--beige); cursor: pointer; transition: background 0.3s, transform 0.3s; border: none; padding: 0; }
+    .slider-dot.active { background: var(--verde); transform: scale(1.4); }
+
+    /* UBICACIÓN */
+    .ubicacion { padding: 90px 60px; background: var(--blanco); }
+    .ubicacion-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+    .ubicacion h2 { font-family: 'Playfair Display', serif; font-size: clamp(26px, 3.5vw, 42px); color: var(--verde); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
+    .ubicacion p { color: #777; font-size: 16px; line-height: 1.7; margin-bottom: 32px; }
+    .ubi-items { display: flex; flex-direction: column; gap: 16px; }
+    .ubi-item { display: flex; align-items: center; gap: 16px; padding: 18px 22px; border-radius: 12px; background: var(--beige-claro); border-left: 3px solid var(--dorado); }
+    .ubi-icon { font-size: 26px; flex-shrink: 0; }
+    .ubi-item h4 { font-size: 15px; font-weight: 600; color: var(--gris); margin-bottom: 2px; }
+    .ubi-item p { font-size: 13px; color: #888; margin: 0; line-height: 1.4; }
+    .mapa-container { border-radius: 20px; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,0.1); height: 400px; }
+    .mapa-container iframe { width: 100%; height: 100%; border: none; display: block; }
+
+    /* VISIÓN */
+    .vision {
+      padding: 90px 60px;
+      background: linear-gradient(160deg, #0d1608 0%, var(--verde) 50%, #2e4a18 100%);
+      position: relative; overflow: hidden;
+    }
+    .vision::before {
+      content: '"'; position: absolute; top: -20px; left: 40px;
+      font-family: 'Playfair Display', serif; font-size: 280px;
+      color: rgba(255,255,255,0.04); line-height: 1; pointer-events: none;
+    }
+    .vision-inner { max-width: 1100px; margin: 0 auto; }
+    .vision .section-header h2 { color: var(--blanco); }
+    .vision .section-tag { color: var(--dorado); }
+    .vision .section-header p { color: rgba(255,255,255,0.55); }
+    .vision-quote { text-align: center; margin-bottom: 60px; }
+    .vision-quote blockquote { font-family: 'Playfair Display', serif; font-size: clamp(17px, 2.5vw, 24px); font-style: italic; color: var(--dorado); line-height: 1.65; max-width: 680px; margin: 0 auto; }
+    .vision-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .vision-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 28px; transition: background 0.3s; }
+    .vision-card:hover { background: rgba(255,255,255,0.1); }
+    .vision-card-icon { font-size: 30px; margin-bottom: 14px; display: block; }
+    .vision-card h3 { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--blanco); margin-bottom: 8px; }
+    .vision-card p { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+    /* TERRENOS */
+    .terrenos { padding: 90px 60px; max-width: 1300px; margin: 0 auto; }
+    .grid-terrenos { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 28px; }
+    .card-wrapper { perspective: 1000px; }
+    .card { background: var(--blanco); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.07); transition: transform 0.4s ease, box-shadow 0.4s ease; transform-style: preserve-3d; }
+    .card-img-wrap { position: relative; overflow: hidden; height: 240px; }
+    .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s; }
+    .card:hover .card-img-wrap img { transform: scale(1.05); }
+    .card-img-placeholder { width: 100%; height: 240px; background: linear-gradient(135deg, var(--verde), #6b7f3e); display: flex; align-items: center; justify-content: center; }
+    .card-img-placeholder span { font-size: 60px; opacity: 0.35; }
+    .card-badge { position: absolute; top: 16px; left: 16px; background: var(--dorado); color: var(--gris); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 6px 14px; border-radius: 50px; }
+    .card-body { padding: 26px; }
+    .card-tipo { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--verde-claro); margin-bottom: 8px; }
+    .card-titulo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--gris); margin-bottom: 8px; line-height: 1.3; }
+    .card-ubicacion { font-size: 13px; color: var(--beige); margin-bottom: 14px; }
+    .card-descripcion { font-size: 14px; color: #666; line-height: 1.6; margin-bottom: 18px; }
+    .card-detalles { display: flex; gap: 12px; flex-wrap: wrap; padding: 14px 0; border-top: 1px solid var(--beige-claro); border-bottom: 1px solid var(--beige-claro); margin-bottom: 18px; }
+    .detalle { font-size: 13px; color: #888; }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; }
+    .card-precio { font-family: 'Playfair Display', serif; font-size: 21px; font-weight: 700; color: var(--verde); }
+    .card-precio span { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 400; color: var(--beige); display: block; }
+    .card-btn { background: var(--verde); color: var(--blanco); padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; transition: background 0.2s, transform 0.2s; display: inline-block; }
+    .card-btn:hover { background: var(--verde-claro); transform: translateY(-1px); }
+
+    /* CONTACTO */
+    .contacto { padding: 90px 60px; background: var(--beige-claro); }
+    .contacto-box { max-width: 780px; margin: 0 auto; background: var(--blanco); border-radius: 24px; padding: 60px; box-shadow: 0 8px 40px rgba(0,0,0,0.08); text-align: center; }
+    .contacto-box h2 { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--verde); margin-bottom: 14px; }
+    .contacto-box p { color: #888; font-size: 16px; margin-bottom: 36px; line-height: 1.6; }
+    .contacto-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-whatsapp { background: #25D366; color: var(--blanco); padding: 15px 34px; border-radius: 10px; font-weight: 600; font-size: 16px; text-decoration: none; display: flex; align-items: center; gap: 10px; transition: transform 0.2s, box-shadow 0.2s; }
+    .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,211,102,0.35); }
+    .btn-llamar { background: var(--beige-claro); color: var(--gris); padding: 15px 34px; border-radius: 10px; font-weight: 600; font-size: 16px; text-decoration: none; display: flex; align-items: center; gap: 10px; border: 1px solid rgba(0,0,0,0.08); transition: background 0.2s; }
+    .btn-llamar:hover { background: #ece9e4; }
+
+    /* FOOTER */
+    footer { background: #0d1608; color: rgba(255,255,255,0.35); text-align: center; padding: 36px; font-size: 13px; }
+    footer strong { color: var(--dorado); }
+    footer a { color: rgba(200,168,75,0.7); text-decoration: none; }
+    footer a:hover { color: var(--dorado); }
+
+    /* WA FLOTANTE */
+    .wa-float { position: fixed; bottom: 32px; right: 32px; z-index: 999; width: 58px; height: 58px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.4); text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; }
+    .wa-float:hover { transform: scale(1.1); box-shadow: 0 8px 30px rgba(37,211,102,0.5); }
+    .wa-float svg { width: 28px; height: 28px; fill: white; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 14px 20px; }
+      .hero-content { padding: 0 24px 56px; }
+      .stats { padding: 36px 24px; gap: 36px; }
+      .galeria-header { padding: 0 24px; }
+      .slide { height: 360px; }
+      .slide-caption { padding: 36px 24px 24px; }
+      .ubicacion { padding: 60px 24px; }
+      .ubicacion-inner { grid-template-columns: 1fr; gap: 36px; }
+      .vision { padding: 60px 24px; }
+      .vision-grid { grid-template-columns: 1fr; }
+      .terrenos { padding: 60px 24px; }
+      .grid-terrenos { grid-template-columns: 1fr; }
+      .contacto { padding: 60px 24px; }
+      .contacto-box { padding: 36px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <img src="./images/logo.png" alt="Raíz Inmobiliaria"
+         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+    <div class="nav-logo-fallback" style="display:none;">RAÍZ <span>INMOBILIARIA</span></div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#galeria">El Desarrollo</a></li>
+    <li><a href="#terrenos">Terrenos</a></li>
+    <li><a href="#contacto" class="nav-cta">Informes</a></li>
+    <li><a href="./index.html" style="color:var(--beige);">← Raíz</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-img">
+    <img src="./images/cibeles4.jpg" alt="Paseos Cibeles"
+         onerror="this.style.display='none';" />
+  </div>
+  <div class="hero-grad"></div>
+  <div class="hero-content">
+    <div class="hero-breadcrumb">
+      <a href="./index.html">Raíz Inmobiliaria</a> › Paseos Cibeles
+    </div>
+    <div class="hero-tag">🌿 Desarrollo Residencial Privado</div>
+    <h1>Paseos<br /><em>Cibeles</em></h1>
+    <p>Un lugar diseñado para recorrerse, respirarse y vivir plenamente. Más que un fraccionamiento — un ecosistema compartido en el corazón del Bajío.</p>
+    <div class="hero-btns">
+      <a href="#terrenos" class="btn-primary">Ver Terrenos disponibles</a>
+      <a href="#vision" class="btn-ghost">Conocer el proyecto</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-num">100%</div>
+    <div class="stat-label">Documentación legal</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">24/7</div>
+    <div class="stat-label">Seguridad privada</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">+Valor</div>
+    <div class="stat-label">Plusvalía garantizada</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">5 min</div>
+    <div class="stat-label">Plaza Cibeles</div>
+  </div>
+</div>
+
+<!-- GALERÍA -->
+<section class="galeria" id="galeria">
+  <div class="galeria-header">
+    <span class="section-tag">El Desarrollo</span>
+    <h2>Así es Paseos Cibeles</h2>
+    <p>Espacios diseñados para recorrerse, respirarse y convivir. Cada rincón del fraccionamiento forma parte activa de la vida diaria.</p>
+  </div>
+
+  <div class="slider-wrapper">
+    <div class="slider-track" id="sliderTrack">
+      <div class="slide">
+        <img src="./images/cibeles1.jpg" alt="Áreas verdes"
+             onerror="this.src=''; this.parentNode.style.background='linear-gradient(135deg,#4a5c2a,#6b7f3e)'; this.style.display='none';" />
+        <div class="slide-caption">
+          <h3>Vegetación integrada</h3>
+          <p>Áreas verdes con especies adaptadas al clima del Bajío</p>
+        </div>
+      </div>
+      <div class="slide">
+        <img src="./images/cibeles2.jpg" alt="Calles"
+             onerror="this.src=''; this.parentNode.style.background='linear-gradient(135deg,#3a4a20,#5a6e30)'; this.style.display='none';" />
+        <div class="slide-caption">
+          <h3>Calles para vivirse</h3>
+          <p>Diseñadas para caminar, conversar y convivir — no solo para transitar</p>
+        </div>
+      </div>
+      <div class="slide">
+        <img src="./images/cibeles3.jpg" alt="Comunidad"
+             onerror="this.src=''; this.parentNode.style.background='linear-gradient(135deg,#2e3a1a,#4a5c2a)'; this.style.display='none';" />
+        <div class="slide-caption">
+          <h3>Entorno residencial</h3>
+          <p>Arquitectura coherente, comunidad funcional y espíritu de pertenencia</p>
+        </div>
+      </div>
+      <div class="slide">
+        <img src="./images/cibeles4.jpg" alt="Acceso"
+             onerror="this.src=''; this.parentNode.style.background='linear-gradient(135deg,#1a2410,#2e3a1a)'; this.style.display='none';" />
+        <div class="slide-caption">
+          <h3>Acceso controlado</h3>
+          <p>Seguridad y tranquilidad desde el primer momento</p>
+        </div>
+      </div>
+    </div>
+    <div class="slider-arrows">
+      <button class="slider-arrow" onclick="changeSlide(-1)">‹</button>
+      <button class="slider-arrow" onclick="changeSlide(1)">›</button>
+    </div>
+  </div>
+  <div class="slider-nav" id="sliderNav">
+    <button class="slider-dot active" onclick="goToSlide(0)"></button>
+    <button class="slider-dot" onclick="goToSlide(1)"></button>
+    <button class="slider-dot" onclick="goToSlide(2)"></button>
+    <button class="slider-dot" onclick="goToSlide(3)"></button>
+  </div>
+</section>
+
+<!-- UBICACIÓN -->
+<section class="ubicacion" id="ubicacion">
+  <div class="ubicacion-inner">
+    <div>
+      <span class="section-tag">¡Ubicación inmejorable!</span>
+      <h2>En el corazón<br />del Bajío</h2>
+      <p>Paseos Cibeles combina tranquilidad residencial con conectividad perfecta al estilo de vida que mereces.</p>
+      <div class="ubi-items">
+        <div class="ubi-item">
+          <div class="ubi-icon">🛒</div>
+          <div>
+            <h4>A 5 minutos de Plaza Cibeles</h4>
+            <p>Supermercados, restaurantes y servicios a la vuelta de la esquina</p>
+          </div>
+        </div>
+        <div class="ubi-item">
+          <div class="ubi-icon">🚗</div>
+          <div>
+            <h4>Acceso rápido a vías principales</h4>
+            <p>Conexión directa con las principales arterias de la ciudad</p>
+          </div>
+        </div>
+        <div class="ubi-item">
+          <div class="ubi-icon">🌳</div>
+          <div>
+            <h4>Entorno residencial y seguro</h4>
+            <p>Privada vigilada, vecinos de calidad, tranquilidad permanente</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mapa-container">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3721.8!2d-101.6832!3d21.1619!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sPaseos+Cibeles%2C+Le%C3%B3n%2C+Guanajuato!5e0!3m2!1ses!2smx!4v1"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- VISIÓN -->
+<section class="vision" id="vision">
+  <div class="vision-inner">
+    <div class="section-header">
+      <span class="section-tag">Manifiesto</span>
+      <h2>Una visión diferente<br />de habitar</h2>
+      <p>Paseos Cibeles nace desde la intención de construir algo más que un conjunto de viviendas.</p>
+    </div>
+    <div class="vision-quote">
+      <blockquote>"Caminar, conversar, descansar, contemplar, convivir... Un lugar diseñado para recorrerse, respirarse y vivir plenamente."</blockquote>
+    </div>
+    <div class="vision-grid">
+      <div class="vision-card">
+        <span class="vision-card-icon">🏡</span>
+        <h3>Hogar sin fronteras</h3>
+        <p>El hogar no termina en la puerta de la casa. Continúa a través de sus calles, jardines y espacios compartidos.</p>
+      </div>
+      <div class="vision-card">
+        <span class="vision-card-icon">🌱</span>
+        <h3>Sostenibilidad real</h3>
+        <p>Priorizamos especies adaptadas al entorno y una estética que dialoga con el paisaje del Bajío.</p>
+      </div>
+      <div class="vision-card">
+        <span class="vision-card-icon">👥</span>
+        <h3>Comunidad primero</h3>
+        <p>Construimos comunidad antes que infraestructura. Generamos pertenencia antes que transacciones.</p>
+      </div>
+      <div class="vision-card">
+        <span class="vision-card-icon">📈</span>
+        <h3>Plusvalía auténtica</h3>
+        <p>El resultado de una comunidad funcional, espacios mantenidos y cultura compartida de cuidado.</p>
+      </div>
+      <div class="vision-card">
+        <span class="vision-card-icon">☀️</span>
+        <h3>Para todas las edades</h3>
+        <p>Áreas donde niños jueguen, jóvenes se activen, adultos convivan y mayores descansen.</p>
+      </div>
+      <div class="vision-card">
+        <span class="vision-card-icon">🤝</span>
+        <h3>Honestidad ante todo</h3>
+        <p>Hablamos desde la honestidad y no desde la presión. Vender también implica orientar y acompañar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TERRENOS -->
+<section class="terrenos" id="terrenos">
+  <div class="section-header">
+    <span class="section-tag">Disponibles ahora</span>
+    <h2>Terrenos en Paseos Cibeles</h2>
+    <p>Lotes residenciales dentro de la privada con documentación impecable y acceso a todas las amenidades.</p>
+  </div>
+  <div class="grid-terrenos">
+    <div class="card-wrapper">
+      <div class="card">
+        <div class="card-img-wrap">
+          <img src="./images/cibeles1.jpg" alt="Terreno Paseos Cibeles"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+          <div class="card-img-placeholder" style="display:none;"><span>🌿</span></div>
+          <div class="card-badge">Disponible</div>
+        </div>
+        <div class="card-body">
+          <div class="card-tipo">Terreno Residencial</div>
+          <div class="card-titulo">Paseos Cibeles</div>
+          <div class="card-ubicacion">📍 León, Guanajuato</div>
+          <div class="card-descripcion">Lote dentro de privada con acceso controlado, áreas verdes, iluminación y toda la infraestructura. Escrituras disponibles, sin trámites pendientes.</div>
+          <div class="card-detalles">
+            <div class="detalle">✅ Escrituras listas</div>
+            <div class="detalle">🔒 Privada vigilada</div>
+            <div class="detalle">🌳 Áreas verdes</div>
+          </div>
+          <div class="card-footer">
+            <div class="card-precio">Consultar precio<span>Financiamiento disponible</span></div>
+            <a href="https://wa.me/524622875881?text=Hola,%20me%20interesa%20un%20terreno%20en%20Paseos%20Cibeles" class="card-btn" target="_blank">Informes</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-wrapper">
+      <div class="card">
+        <div class="card-img-wrap" style="background:linear-gradient(135deg,#888,#555);">
+          <div class="card-img-placeholder" style="background:transparent;"><span>🏗</span></div>
+          <div class="card-badge" style="background:#888;color:white;">Próximamente</div>
+        </div>
+        <div class="card-body">
+          <div class="card-tipo">Nueva disponibilidad</div>
+          <div class="card-titulo">Más terrenos en camino</div>
+          <div class="card-ubicacion">📍 Paseos Cibeles, León</div>
+          <div class="card-descripcion">Contáctanos para ser el primero en enterarte y acceder a precios de preventa exclusivos.</div>
+          <div class="card-detalles"><div class="detalle">🔔 Notificación disponible</div></div>
+          <div class="card-footer">
+            <div class="card-precio" style="color:#999;font-size:17px;">Preventa<span>Regístrate ahora</span></div>
+            <a href="https://wa.me/524622875881?text=Quiero%20informaci%C3%B3n%20de%20nuevos%20terrenos%20en%20Paseos%20Cibeles" class="card-btn" style="background:#888;" target="_blank">Avisar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contacto" id="contacto">
+  <div class="contacto-box">
+    <h2>¿Te interesa un terreno?</h2>
+    <p>Habla con nosotros hoy. Sin presión, sin letra chica. Solo información honesta sobre disponibilidad, precios y financiamiento.</p>
+    <div class="contacto-btns">
+      <a href="https://wa.me/524622875881?text=Hola,%20me%20interesa%20un%20terreno%20en%20Paseos%20Cibeles" class="btn-whatsapp" target="_blank">
+        <svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:white;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+      <a href="tel:+524622875881" class="btn-llamar">📞 Llamar ahora</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 <strong>Raíz Inmobiliaria</strong> — Paseos Cibeles, León, Guanajuato. | <a href="./index.html">← Volver a Raíz Inmobiliaria</a></p>
+</footer>
+
+<!-- WA FLOTANTE -->
+<a href="https://wa.me/524622875881?text=Hola,%20me%20interesa%20un%20terreno%20en%20Paseos%20Cibeles" class="wa-float" target="_blank">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+  let current = 0;
+  const track = document.getElementById('sliderTrack');
+  const dots = document.querySelectorAll('.slider-dot');
+  const total = dots.length;
+
+  function updateSlider() {
+    track.style.transform = `translateX(-${current * 100}%)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+  function changeSlide(dir) { current = (current + dir + total) % total; updateSlider(); }
+  function goToSlide(i) { current = i; updateSlider(); }
+  setInterval(() => changeSlide(1), 5000);
+
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const rotY = ((e.clientX - rect.left - rect.width/2) / rect.width) * 8;
+      const rotX = -((e.clientY - rect.top - rect.height/2) / rect.height) * 5;
+      card.style.transform = `rotateY(${rotY}deg) rotateX(${rotX}deg) translateY(-8px)`;
+      card.style.boxShadow = `0 24px 48px rgba(0,0,0,0.15)`;
+    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; card.style.boxShadow = ''; });
+  });
+</script>
+</body>
+</html>
