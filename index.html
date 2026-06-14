@@ -60,7 +60,7 @@
     }
     .hero-bg video {
       position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; opacity: 0.35;
+      object-fit: cover; opacity: 0.6;
     }
     .particles { position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
     .particle {
@@ -116,12 +116,13 @@
     }
     .hero-logo-text {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(52px,10vw,108px); font-weight: 700;
+      font-size: clamp(44px,8vw,96px); font-weight: 700;
       color: var(--blanco); letter-spacing: 4px; line-height: 1;
       animation: logoEntrance 1.4s cubic-bezier(0.16,1,0.3,1) forwards;
-      opacity: 0;
+      opacity: 0; text-align: center;
+      text-shadow: 0 2px 40px rgba(0,0,0,0.5);
     }
-    .hero-logo-text span { color: var(--dorado); display: block; }
+    .hero-logo-text span { color: var(--dorado); display: block; font-size: 0.42em; letter-spacing: 6px; margin-top: 10px; font-weight: 400; }
     .hero-tagline {
       margin-top: 28px;
       font-family: 'Playfair Display', serif; font-style: italic;
@@ -323,9 +324,7 @@
   <div class="hero-pulse"></div>
   <div class="hero-ring"></div>
   <div class="hero-logo-wrap">
-    <img class="hero-logo" src="./images/raiz-inmobiliaria-logo.png" alt="Raíz Inmobiliaria"
-         onerror="this.style.display='none'; document.getElementById('logoText').style.display='block';" />
-    <div class="hero-logo-text" id="logoText">RAÍZ<span>INMOBILIARIA</span></div>
+    <div class="hero-logo-text" id="logoText">RAÍZ<span>INMOBILIARIA DEL BAJÍO</span></div>
     <div class="hero-tagline">Tu patrimonio, bien plantado.</div>
     <div class="hero-divider"></div>
     <div class="hero-sub">Inmobiliaria del Bajío · Guanajuato</div>
@@ -405,7 +404,7 @@
       <div class="proyecto-content">
         <span class="proyecto-tag">✅ Terrenos disponibles</span>
         <h3>Paseos Cibeles</h3>
-        <p>Fraccionamiento residencial privado en León, Guanajuato. Diseñado para vivirse plenamente — áreas verdes, seguridad 24/7 y comunidad real.</p>
+        <p>Fraccionamiento residencial privado en Irapuato, Guanajuato. Diseñado para vivirse plenamente — áreas verdes, seguridad 24/7 y comunidad real.</p>
         <div class="proyecto-cta">Ver el desarrollo completo <div class="proyecto-arrow">›</div></div>
       </div>
     </a>
