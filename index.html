@@ -270,6 +270,26 @@
     }
     .btn-tel:hover { background: rgba(255,255,255,0.18); }
 
+    /* ── FRASE CINEMATIC ── */
+    .frase-section {
+      background: linear-gradient(135deg, var(--verde-oscuro) 0%, #0d1608 100%);
+      padding: 100px 60px; text-align: center; position: relative; overflow: hidden;
+    }
+    .frase-section::before {
+      content: '"'; position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
+      font-family: 'Playfair Display', serif; font-size: 300px; color: rgba(200,168,75,0.04);
+      line-height: 1; pointer-events: none;
+    }
+    .frase-inner { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+    .frase-tag { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(200,168,75,0.7); margin-bottom: 32px; display: block; }
+    .frase-texto {
+      font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: clamp(24px,3.5vw,42px); color: var(--blanco); line-height: 1.55; font-weight: 400;
+    }
+    .frase-texto em { color: var(--dorado); font-style: normal; }
+    .frase-linea { width: 60px; height: 2px; background: var(--dorado); margin: 36px auto; opacity: 0.5; }
+    .frase-autor { font-size: 13px; letter-spacing: 2px; color: rgba(255,255,255,0.35); text-transform: uppercase; }
+
     footer { background: #0d1608; color: rgba(255,255,255,0.3); text-align: center; padding: 36px; font-size: 13px; }
     footer strong { color: var(--dorado); }
 
@@ -340,43 +360,40 @@
     <div class="quienes-grid">
       <div class="quienes-text">
         <span class="section-tag">Quiénes somos</span>
-        <h2 class="section-title">Una inmobiliaria con raíces sólidas</h2>
-        <p>Raíz Inmobiliaria nació con una convicción clara: que cada inversión en bienes raíces debe sentirse segura, transparente y personal. Somos un equipo de profesionales comprometidos con acompañar a nuestros clientes en cada paso del proceso.</p>
-        <p>Desde la búsqueda del terreno ideal hasta la firma de escrituras, estás en manos de gente que conoce el mercado del Bajío y que trabaja con honestidad ante todo.</p>
+        <h2 class="section-title">La inmobiliaria más confiable del Bajío</h2>
+        <p>Más de 12 años acompañando familias e inversionistas en el Bajío. Somos la opción más profesional de la región: conocemos el mercado, tenemos la experiencia y trabajamos con una honestidad que nos distingue.</p>
         <div class="stats-grid">
-          <div class="stat-card"><div class="stat-num">+10</div><div class="stat-lbl">Años en el mercado inmobiliario del Bajío</div></div>
-          <div class="stat-card"><div class="stat-num">100%</div><div class="stat-lbl">Documentación legal en regla en cada proyecto</div></div>
-          <div class="stat-card"><div class="stat-num">0</div><div class="stat-lbl">Sorpresas desagradables — letra chica cero</div></div>
-          <div class="stat-card"><div class="stat-num">∞</div><div class="stat-lbl">Compromiso con tu patrimonio y tu familia</div></div>
+          <div class="stat-card"><div class="stat-num">+12</div><div class="stat-lbl">Años de experiencia en el Bajío</div></div>
+          <div class="stat-card"><div class="stat-num">100%</div><div class="stat-lbl">Documentación legal en regla, siempre</div></div>
         </div>
       </div>
       <div class="valores-list">
         <div class="valor">
-          <div class="valor-icon">🏛</div>
+          <div class="valor-icon">🏆</div>
           <div>
-            <h3>Seguridad legal garantizada</h3>
-            <p>Cada propiedad cuenta con escrituras y documentación en orden. Sin letra chica, sin sorpresas al final.</p>
+            <h3>Los más profesionales de la región</h3>
+            <p>Hay muchas inmobiliarias en el Bajío. Nosotros somos los que más conocen el mercado, con el trato más honesto y el proceso más limpio.</p>
           </div>
         </div>
         <div class="valor">
           <div class="valor-icon">🤝</div>
           <div>
-            <h3>Atención directa y personalizada</h3>
-            <p>Hablas con personas reales. Tu asesor te acompaña de principio a fin, sin intermediarios que dilaten el proceso.</p>
+            <h3>Atención directa, sin intermediarios</h3>
+            <p>Hablas con personas reales. Tu asesor te acompaña de principio a fin, desde la primer visita hasta la firma de escrituras.</p>
           </div>
         </div>
         <div class="valor">
-          <div class="valor-icon">📍</div>
+          <div class="valor-icon">🏛</div>
           <div>
-            <h3>Conocemos el Bajío</h3>
-            <p>Años de experiencia local nos permiten orientarte hacia las mejores oportunidades de inversión en León y alrededores.</p>
+            <h3>Seguridad legal garantizada</h3>
+            <p>Cada propiedad con escrituras y documentación en orden. Sin letra chica, sin sorpresas.</p>
           </div>
         </div>
         <div class="valor">
           <div class="valor-icon">💰</div>
           <div>
             <h3>Opciones de financiamiento</h3>
-            <p>Planes flexibles para que tu inversión no espere por burocracia. Te asesoramos en opciones de crédito y pago.</p>
+            <p>Te asesoramos en crédito y planes de pago. Tu sueño no debería esperar por burocracia.</p>
           </div>
         </div>
       </div>
@@ -415,12 +432,26 @@
   </div>
 </section>
 
+<!-- FRASE CINEMATIC -->
+<section class="frase-section">
+  <div class="frase-inner">
+    <span class="frase-tag">Nuestra promesa</span>
+    <p class="frase-texto">
+      Te acompañamos de la mano en todo el proceso.<br />
+      <em>Desde la raíz hasta la construcción.</em>
+    </p>
+    <div class="frase-linea"></div>
+    <p class="frase-autor">Raíz Inmobiliaria del Bajío</p>
+  </div>
+</section>
+
 <!-- CONTACTO -->
 <section class="section bg-blanco" id="contacto">
   <div class="contacto-box">
     <span class="section-tag" style="color:rgba(200,168,75,0.8);">Hablemos</span>
     <h2>¿Listo para invertir?</h2>
-    <p>Sin presión, sin letra chica. Solo una conversación honesta sobre tu próxima inversión inmobiliaria en el Bajío.</p>
+    <p style="margin-bottom:12px;">Sin presión, sin letra chica. Solo una conversación honesta sobre tu próxima inversión inmobiliaria en el Bajío.</p>
+    <p style="font-size:15px;color:rgba(255,255,255,0.5);margin-bottom:36px;">⚡ Respondemos en minutos, no en días.</p>
     <div class="contacto-btns">
       <a href="https://wa.me/524622875881?text=Hola,%20me%20interesa%20conocer%20los%20proyectos%20de%20Ra%C3%ADz%20Inmobiliaria" class="btn-wa" target="_blank">
         <svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:white;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
