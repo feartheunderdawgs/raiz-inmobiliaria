@@ -334,7 +334,7 @@
 <!-- HERO -->
 <section class="hero" id="inicio">
   <div class="hero-bg">
-    <video id="heroVideo" autoplay muted loop playsinline webkit-playsinline>
+    <video id="heroVideo" autoplay muted loop playsinline webkit-playsinline preload="auto">
       <source src="./images/raiz-inmobiliaria-logo-video.mp4" type="video/mp4">
     </video>
   </div>
@@ -478,8 +478,19 @@
   // Autoplay video en iOS
   const vid = document.getElementById('heroVideo');
   if (vid) {
-    vid.play().catch(() => {});
-    document.addEventListener('touchstart', () => { vid.play().catch(() => {}); }, { once: true });
+    const tryPlay = () => vid.play().catch(() => {});
+    tryPlay();
+    vid.addEventListener('loadedmetadata', tryPlay);
+    vid.addEventListener('canplay', tryPlay);
+    vid.addEventListener('canplaythrough', tryPlay);
+    document.addEventListener('touchstart', tryPlay, { once: true });
+    document.addEventListener('scroll', tryPlay, { once: true });
+    // Retry cada segundo los primeros 5 segundos
+    let attempts = 0;
+    const retryInterval = setInterval(() => {
+      tryPlay();
+      if (++attempts >= 5) clearInterval(retryInterval);
+    }, 1000);
   }
   // Partículas
   const wrap = document.getElementById('particles');
