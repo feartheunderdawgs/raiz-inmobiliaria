@@ -334,7 +334,7 @@
 <!-- HERO -->
 <section class="hero" id="inicio">
   <div class="hero-bg">
-    <video autoplay muted loop playsinline>
+    <video id="heroVideo" autoplay muted loop playsinline webkit-playsinline>
       <source src="./images/raiz-inmobiliaria-logo-video.mp4" type="video/mp4">
     </video>
   </div>
@@ -475,6 +475,12 @@
   window.addEventListener('scroll', () => {
     document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 70);
   });
+  // Autoplay video en iOS
+  const vid = document.getElementById('heroVideo');
+  if (vid) {
+    vid.play().catch(() => {});
+    document.addEventListener('touchstart', () => { vid.play().catch(() => {}); }, { once: true });
+  }
   // Partículas
   const wrap = document.getElementById('particles');
   for (let i = 0; i < 28; i++) {
