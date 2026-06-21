@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Áreas Verdes · Paseos Cibeles — Lo que viene · Irapuato Guanajuato</title>
+  <meta name="description" content="Recorre las áreas verdes proyectadas de Paseos Cibeles. Irapuato, Guanajuato."/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --gold:#c8a84b;
+      --gold-light:rgba(200,168,75,.12);
+      --green:#4a5c2a;
+      --dark:#060c04;
+      --cream:#faf8f3;
+      --warm:#f5f0e6;
+      --text-dark:#2a1f0e;
+      --text-mid:rgba(80,60,20,.55);
+    }
+    *,*::before,*::after{ margin:0; padding:0; box-sizing:border-box; }
+    html,body{ height:100%; overflow:hidden; background:var(--dark); }
+    body{ font-family:'Inter',sans-serif; color:#fff; }
+
+    /* ══════════════════════════════════════════
+       INTRO — fondo cálido, luz, elegancia
+    ══════════════════════════════════════════ */
+    #intro{
+      position:fixed; inset:0; z-index:900;
+      background:linear-gradient(155deg, #fcfaf6 0%, #f7f0e3 45%, #faf8f4 100%);
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      overflow:hidden;
+      transition:opacity 1s ease, transform 1s cubic-bezier(.4,0,.2,1);
+    }
+    #intro.exit{
+      opacity:0;
+      transform:scale(1.015) translateY(-5px);
+      pointer-events:none;
+    }
+
+    /* Partículas de luz (JS) */
+    .ipt{
+      position:absolute; border-radius:50%;
+      animation:ipt-float var(--d) var(--dl) ease-in-out infinite;
+      pointer-events:none;
+    }
+    @keyframes ipt-float{
+      0%  { transform:translateY(0)   translateX(0) scale(1);   opacity:0; }
+      12% { opacity:1; }
+      82% { opacity:1; }
+      100%{ transform:translateY(var(--dy)) translateX(var(--dx)) scale(.4); opacity:0; }
+    }
+
+    /* Glow radial detrás del logo */
+    .i-halo{
+      position:absolute;
+      width:700px; height:700px; border-radius:50%;
+      background:radial-gradient(circle,
+        rgba(200,168,75,.22) 0%,
+        rgba(200,168,75,.10) 35%,
+        rgba(200,168,75,.04) 60%,
+        transparent 75%);
+      pointer-events:none;
+      transform:scale(0);
+      animation:halo-in 2s .05s cubic-bezier(.15,0,.1,1) forwards;
+    }
+    .i-halo::after{
+      content:''; position:absolute; inset:-60px; border-radius:50%;
+      border:1px solid rgba(200,168,75,.18);
+      animation:halo-ring 6s 2s ease-in-out infinite alternate;
+    }
+    @keyframes halo-in{ to{ transform:scale(1); } }
+    @keyframes halo-ring{ 0%{transform:scale(.92);opacity:.4} 100%{transform:scale(1.06);opacity:.9} }
+
+    /* ── BOTANICAL SVG — PANTALLA COMPLETA ── */
+    .i-botanico{
+      position:absolute; inset:0;
+      width:100%; height:100%; pointer-events:none;
+      overflow:visible;
+    }
+    .vine{ fill:none; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* Grow-in per vine (dasharray ajustados a paths más largos) */
+    .v1 { stroke-dasharray:1400;stroke-dashoffset:1400;animation:vine-grow 1.1s .1s  ease-out forwards;}
+    .v2 { stroke-dasharray:1200;stroke-dashoffset:1200;animation:vine-grow 1.0s .22s ease-out forwards;}
+    .v3 { stroke-dasharray:1400;stroke-dashoffset:1400;animation:vine-grow 1.1s .14s ease-out forwards;}
+    .v4 { stroke-dasharray:1200;stroke-dashoffset:1200;animation:vine-grow 1.0s .26s ease-out forwards;}
+    .v5 { stroke-dasharray:600; stroke-dashoffset:600; animation:vine-grow .65s .7s  ease-out forwards;}
+    .v6 { stroke-dasharray:600; stroke-dashoffset:600; animation:vine-grow .65s .74s ease-out forwards;}
+    .v7 { stroke-dasharray:400; stroke-dashoffset:400; animation:vine-grow .5s  .95s ease-out forwards;}
+    .v8 { stroke-dasharray:400; stroke-dashoffset:400; animation:vine-grow .5s  .98s ease-out forwards;}
+    .v9 { stroke-dasharray:700; stroke-dashoffset:700; animation:vine-grow .7s  .32s ease-out forwards;}
+    .v10{ stroke-dasharray:700; stroke-dashoffset:700; animation:vine-grow .7s  .36s ease-out forwards;}
+    .v11{ stroke-dasharray:350; stroke-dashoffset:350; animation:vine-grow .45s 1.15s ease-out forwards;}
+    .v12{ stroke-dasharray:350; stroke-dashoffset:350; animation:vine-grow .45s 1.18s ease-out forwards;}
+    .v13{ stroke-dasharray:280; stroke-dashoffset:280; animation:vine-grow .38s 1.35s ease-out forwards;}
+    .v14{ stroke-dasharray:280; stroke-dashoffset:280; animation:vine-grow .38s 1.38s ease-out forwards;}
+    @keyframes vine-grow{ to{ stroke-dashoffset:0; } }
+
+    /* Arm sway — groups pivot at center bottom (700,900) */
+    .arm-l{
+      transform-box:view-box; transform-origin:700px 900px;
+      will-change:transform;
+      animation:sway-l 8s 1.2s ease-in-out infinite alternate;
+    }
+    .arm-r{
+      transform-box:view-box; transform-origin:700px 900px;
+      will-change:transform;
+      animation:sway-r 7.5s 1.2s ease-in-out infinite alternate;
+    }
+    .arm-top{
+      transform-box:view-box; transform-origin:700px 0px;
+      will-change:transform;
+      animation:sway-top 9s 1.5s ease-in-out infinite alternate;
+    }
+    @keyframes sway-l{
+      0%  { transform:rotate(0deg); }
+      45% { transform:rotate(-3.5deg); }
+      100%{ transform:rotate(-1.5deg); }
+    }
+    @keyframes sway-r{
+      0%  { transform:rotate(0deg); }
+      45% { transform:rotate(3.5deg); }
+      100%{ transform:rotate(1.5deg); }
+    }
+    @keyframes sway-top{
+      0%  { transform:rotate(0deg); }
+      50% { transform:rotate(1.5deg); }
+      100%{ transform:rotate(-1.5deg); }
+    }
+
+    /* Bloom entrada + respiración continua */
+    .bloom{ transform-box:fill-box; transform-origin:center; opacity:0; }
+    .b1 { animation:bloom-in .55s 1.1s  cubic-bezier(.2,0,.1,1.5) forwards, flower-breathe-a 4.2s 1.75s ease-in-out infinite alternate; }
+    .b2 { animation:bloom-in .55s 1.15s cubic-bezier(.2,0,.1,1.5) forwards, flower-breathe-b 4.6s 1.8s  ease-in-out infinite alternate; }
+    .b3 { animation:bloom-in .45s 1.3s  cubic-bezier(.2,0,.1,1.5) forwards, flower-breathe-c 3.8s 1.9s  ease-in-out infinite alternate; }
+    .b4 { animation:bloom-in .45s 1.35s cubic-bezier(.2,0,.1,1.5) forwards, flower-breathe-a 4.0s 2.0s  ease-in-out infinite alternate; }
+    .b5 { animation:bloom-in .4s  1.5s  cubic-bezier(.2,0,.1,1.5) forwards, flower-breathe-b 3.4s 2.1s  ease-in-out infinite alternate; }
+    .b6 { animation:bloom-in .4s  1.55s cubic-bezier(.2,0,.1,1.5) forwards, flower-breathe-c 3.6s 2.2s  ease-in-out infinite alternate; }
+    .b7 { animation:bloom-in .35s 1.65s cubic-bezier(.2,0,.1,1.5) forwards, flower-breathe-a 5.2s 2.3s  ease-in-out infinite alternate; }
+    .b8 { animation:bloom-in .35s 1.7s  cubic-bezier(.2,0,.1,1.5) forwards, flower-breathe-b 5.0s 2.4s  ease-in-out infinite alternate; }
+    .b9 { animation:bloom-in .3s  1.8s  cubic-bezier(.2,0,.1,1.5) forwards, flower-breathe-c 3.2s 2.5s  ease-in-out infinite alternate; }
+    .b10{ animation:bloom-in .3s  1.85s cubic-bezier(.2,0,.1,1.5) forwards, flower-breathe-a 3.4s 2.6s  ease-in-out infinite alternate; }
+    .b11{ animation:bloom-in .28s 1.95s cubic-bezier(.2,0,.1,1.5) forwards, flower-breathe-b 4.4s 2.7s  ease-in-out infinite alternate; }
+    .b12{ animation:bloom-in .28s 2.0s  cubic-bezier(.2,0,.1,1.5) forwards, flower-breathe-c 4.8s 2.8s  ease-in-out infinite alternate; }
+    @keyframes bloom-in{
+      from{ transform:scale(0) rotate(-25deg); opacity:0; }
+      to  { transform:scale(1) rotate(0deg);   opacity:1; }
+    }
+    @keyframes flower-breathe-a{
+      0%  { transform:scale(1)    rotate(0deg);  opacity:1; }
+      100%{ transform:scale(1.28) rotate(20deg); opacity:1; }
+    }
+    @keyframes flower-breathe-b{
+      0%  { transform:scale(1)    rotate(0deg);   opacity:1; }
+      100%{ transform:scale(1.22) rotate(-16deg); opacity:1; }
+    }
+    @keyframes flower-breathe-c{
+      0%  { transform:scale(1)    rotate(0deg);  opacity:1; }
+      100%{ transform:scale(1.30) rotate(24deg); opacity:1; }
+    }
+
+    /* Vine shimmer pulse */
+    .vine-shimmer{ animation:vine-shimmer 4s ease-in-out infinite alternate; }
+    @keyframes vine-shimmer{ 0%{opacity:.35} 100%{opacity:.65} }
+
+    /* Floating petals (JS-created) */
+    .fpetal{
+      position:absolute;
+      border-radius:60% 40% 60% 40% / 40% 60% 40% 60%;
+      opacity:0; pointer-events:none;
+      animation:fpetal-float var(--dur) var(--delay) ease-in-out infinite;
+    }
+    @keyframes fpetal-float{
+      0%  { transform:translateY(0) translateX(0) rotate(0deg) scale(1); opacity:0; }
+      8%  { opacity:var(--op); }
+      88% { opacity:var(--op); }
+      100%{ transform:translateY(var(--dy)) translateX(var(--dx)) rotate(var(--rot)) scale(.3); opacity:0; }
+    }
+
+    /* Logo — glow separado del img para evitar pixelación por blend-mode+filter */
+    .i-logo-wrap{
+      position:relative;
+      display:flex; align-items:center; justify-content:center;
+      z-index:1;
+      width:380px; height:380px;
+    }
+    /* Glow en un elemento aparte — nunca toca el img */
+    .i-logo-glow{
+      position:absolute; inset:-60px;
+      border-radius:50%;
+      opacity:0;
+      animation:logo-glow 3.2s .4s cubic-bezier(.15,0,.05,1) forwards;
+      pointer-events:none;
+    }
+    @keyframes logo-glow{
+      0%  { opacity:0;   transform:scale(.7); background:radial-gradient(circle, rgba(200,168,75,0) 0%, transparent 60%); }
+      25% { opacity:.5;  transform:scale(1);  background:radial-gradient(circle, rgba(200,168,75,.18) 10%, rgba(200,168,75,.06) 45%, transparent 65%); }
+      55% { opacity:1;   transform:scale(1.15); background:radial-gradient(circle, rgba(200,168,75,.42) 10%, rgba(200,168,75,.18) 40%, transparent 68%); }
+      80% { opacity:.85; transform:scale(1.05); background:radial-gradient(circle, rgba(200,168,75,.25) 15%, rgba(200,168,75,.08) 50%, transparent 70%); }
+      100%{ opacity:1;   transform:scale(1);  background:radial-gradient(circle, rgba(200,168,75,.15) 15%, rgba(200,168,75,.05) 50%, transparent 70%); }
+    }
+    /* Glow pulsante continuo después de la entrada */
+    .i-logo-glow.ready{
+      animation:logo-glow 3.2s .4s cubic-bezier(.15,0,.05,1) forwards,
+                logo-pulse 4s 3.8s ease-in-out infinite alternate;
+    }
+    @keyframes logo-pulse{
+      0%  { transform:scale(1);    opacity:.8; }
+      100%{ transform:scale(1.08); opacity:1; }
+    }
+    /* Logo — fondo ya removido del PNG, sin blend-mode */
+    .i-logo{
+      position:absolute; inset:0;
+      width:100%; height:100%;
+      display:block;
+      opacity:0;
+      will-change:transform,opacity;
+      animation:logo-cin 3.2s .4s cubic-bezier(.15,0,.05,1) forwards;
+    }
+    @keyframes logo-cin{
+      0%  { opacity:0;   transform:scale(.88); }
+      25% { opacity:.65; transform:scale(1.03); }
+      55% { opacity:1;   transform:scale(.99); }
+      80% { opacity:1;   transform:scale(1.006); }
+      100%{ opacity:1;   transform:scale(1); }
+    }
+
+    /* Línea dorada decorativa */
+    .i-rule{
+      display:flex; align-items:center; gap:14px;
+      margin-top:30px; z-index:1;
+      opacity:0; animation:i-fadeup .7s 2.4s ease forwards;
+    }
+    .i-rule::before,.i-rule::after{
+      content:''; display:block;
+      width:40px; height:1px;
+      background:linear-gradient(to right, transparent, rgba(200,168,75,.5));
+    }
+    .i-rule::after{ background:linear-gradient(to left, transparent, rgba(200,168,75,.5)); }
+    .i-rule-dot{
+      width:4px; height:4px; border-radius:50%;
+      background:var(--gold); opacity:.5;
+    }
+
+    /* Título */
+    .i-title{
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(26px,4vw,34px);
+      font-weight:400; letter-spacing:.18em;
+      color:var(--text-dark);
+      margin-top:18px; z-index:1;
+      opacity:0; transform:translateY(8px);
+      animation:i-fadeup .85s 2.6s cubic-bezier(.2,0,.1,1) forwards;
+    }
+
+    /* Subtítulo */
+    .i-sub{
+      font-family:'Inter',sans-serif;
+      font-size:10.5px; font-weight:300;
+      letter-spacing:.28em; text-transform:uppercase;
+      color:var(--text-mid);
+      margin-top:10px; z-index:1;
+      opacity:0;
+      animation:i-fadeup .7s 3.1s ease forwards;
+    }
+
+    /* Botones de sonido */
+    .i-sound-row{
+      margin-top:48px; z-index:1;
+      display:flex; flex-direction:column; align-items:center; gap:10px;
+      opacity:0;
+      animation:i-fadeup .5s 3.5s ease forwards;
+    }
+    .i-btn-experience{
+      background:transparent;
+      border:1px solid rgba(200,168,75,.38);
+      color:#7a5e25;
+      padding:11px 30px; border-radius:3px;
+      font-family:'Inter',sans-serif;
+      font-size:9.5px; letter-spacing:.3em; text-transform:uppercase;
+      cursor:pointer; transition:all .25s;
+      display:flex; align-items:center; gap:9px;
+    }
+    .i-btn-experience:hover{
+      background:rgba(200,168,75,.06);
+      border-color:rgba(200,168,75,.75);
+      color:#4a3510;
+    }
+    .i-btn-experience svg{ width:12px; height:12px; fill:#c8a84b; flex-shrink:0; }
+    .i-btn-skip{
+      background:transparent; border:none;
+      color:rgba(100,78,40,.36); font-family:'Inter',sans-serif;
+      font-size:9px; letter-spacing:.18em; text-transform:uppercase;
+      cursor:pointer; padding:4px;
+      transition:color .2s;
+    }
+    .i-btn-skip:hover{ color:rgba(100,78,40,.65); }
+
+    /* Estado cuando el sonido ya está activo (auto) */
+    .i-sound-auto{
+      margin-top:44px; z-index:1;
+      opacity:0;
+      animation:i-fadeup .5s 3.6s ease forwards;
+      display:flex; align-items:center; gap:7px;
+      font-size:9px; letter-spacing:.2em; text-transform:uppercase;
+      color:rgba(140,106,44,.45);
+    }
+    .i-sound-auto svg{ width:10px; height:10px; fill:rgba(140,106,44,.45); }
+
+    @keyframes i-fadeup{
+      from{ opacity:0; transform:translateY(7px); }
+      to  { opacity:1; transform:translateY(0); }
+    }
+    @keyframes i-fade{ from{opacity:0} to{opacity:1} }
+
+    /* ══════════════════════════════════════════
+       MAIN APP — oscuro, cinematográfico
+    ══════════════════════════════════════════ */
+    .canvas{
+      position:fixed; inset:0;
+      display:grid; grid-template-columns:1fr 420px;
+    }
+    .img-side{ position:relative; overflow:hidden; }
+    .img-slide{
+      position:absolute; inset:0;
+      background-size:cover; background-position:center;
+      opacity:0; transform:scale(1.06);
+      transition:opacity .7s ease, transform .7s ease;
+    }
+    .img-slide.active{ opacity:1; transform:scale(1); }
+    .img-fade{
+      position:absolute; inset:0;
+      background:linear-gradient(90deg,rgba(6,12,4,0) 40%,rgba(6,12,4,.92) 100%);
+      pointer-events:none;
+    }
+    .img-bottom-fade{
+      position:absolute; inset:0;
+      background:linear-gradient(0deg,rgba(6,12,4,.8) 0%,transparent 40%);
+      pointer-events:none;
+    }
+    .img-counter{
+      position:absolute; bottom:28px; left:32px; z-index:10;
+      font-size:11px; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(255,255,255,.28);
+    }
+    .img-counter span{ color:var(--gold); font-weight:600; }
+    .click-prev,.click-next{
+      position:absolute; top:0; bottom:0; width:35%;
+      z-index:5; cursor:pointer;
+    }
+    .click-prev{ left:0; } .click-next{ right:0; }
+    .info-side{
+      position:relative;
+      display:flex; flex-direction:column;
+      justify-content:center;
+      padding:48px 44px 48px 36px;
+      overflow:hidden;
+    }
+    .info-side::before{
+      content:'';
+      position:absolute; left:0; top:12%; bottom:12%; width:1px;
+      background:linear-gradient(to bottom,transparent,rgba(255,255,255,.07) 30%,rgba(255,255,255,.07) 70%,transparent);
+    }
+    .phase{
+      display:inline-flex; align-items:center; gap:8px;
+      background:rgba(200,168,75,.1); border:1px solid rgba(200,168,75,.22);
+      padding:5px 14px; border-radius:50px;
+      font-size:10px; font-weight:600; letter-spacing:2.5px;
+      text-transform:uppercase; color:var(--gold);
+      width:fit-content; margin-bottom:22px;
+      opacity:0; transform:translateY(8px);
+      transition:opacity .35s .05s, transform .35s .05s;
+    }
+    .phase .blink{
+      width:5px; height:5px; border-radius:50%;
+      background:var(--gold); animation:blink 2s ease infinite;
+    }
+    @keyframes blink{ 0%,100%{opacity:1} 50%{opacity:.25} }
+    .zone-name{
+      font-family:'Playfair Display',serif;
+      font-size:clamp(38px,3.2vw,54px); font-weight:700; line-height:1.0;
+      color:#fff; margin-bottom:6px;
+      opacity:0; transform:translateY(14px);
+      transition:opacity .35s .1s, transform .35s .1s;
+    }
+    .zone-name em{ color:var(--gold); font-style:italic; display:block; }
+    .zone-tag{
+      font-size:13px; color:rgba(255,255,255,.32);
+      letter-spacing:.5px; margin-bottom:36px;
+      opacity:0; transform:translateY(10px);
+      transition:opacity .35s .15s, transform .35s .15s;
+    }
+    .feats{
+      display:flex; flex-direction:column; gap:10px;
+      opacity:0; transform:translateY(8px);
+      transition:opacity .35s .2s, transform .35s .2s;
+    }
+    .feat{
+      display:flex; align-items:center; gap:14px;
+      padding:13px 18px; border-radius:12px;
+      background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07);
+      transition:background .2s;
+    }
+    .feat:hover{ background:rgba(255,255,255,.08); }
+    .feat-icon{ font-size:20px; flex-shrink:0; line-height:1; }
+    .feat-text{ font-size:13px; font-weight:500; color:rgba(255,255,255,.7); line-height:1.4; }
+    .feat-text small{ display:block; font-size:11px; color:rgba(255,255,255,.3); font-weight:400; margin-top:2px; }
+    .wa-btn{
+      display:inline-flex; align-items:center; gap:10px;
+      background:#25D366; color:#fff; padding:13px 22px;
+      border-radius:10px; font-weight:600; font-size:13px;
+      text-decoration:none; margin-top:28px; width:fit-content;
+      opacity:0; transform:translateY(8px);
+      transition:opacity .35s .28s, transform .35s .28s, box-shadow .2s;
+    }
+    .wa-btn:hover{ box-shadow:0 8px 24px rgba(37,211,102,.4); }
+    .wa-btn svg{ width:17px; height:17px; fill:white; flex-shrink:0; }
+    .info-side.ready .phase,
+    .info-side.ready .zone-name,
+    .info-side.ready .zone-tag,
+    .info-side.ready .feats,
+    .info-side.ready .wa-btn{ opacity:1; transform:translateY(0); }
+    .nav-bar{
+      position:fixed; bottom:0; left:0; right:420px; z-index:20;
+      padding:16px 32px 20px;
+      display:flex; align-items:center; gap:10px;
+      background:linear-gradient(0deg,rgba(6,12,4,1) 40%,transparent);
+    }
+    .nav-arrow{
+      width:34px; height:34px; border-radius:50%;
+      background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1);
+      color:rgba(255,255,255,.5); font-size:18px;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; transition:all .2s; flex-shrink:0;
+    }
+    .nav-arrow:hover{ background:var(--gold); border-color:var(--gold); color:#1a1a0a; }
+    .nav-arrow:disabled{ opacity:.2; cursor:default; }
+    .thumbs{ display:flex; gap:8px; flex:1; overflow-x:auto; padding:0 6px; scrollbar-width:none; }
+    .thumbs::-webkit-scrollbar{ display:none; }
+    .thumb{
+      flex-shrink:0; width:52px; height:36px; border-radius:7px; overflow:hidden;
+      border:2px solid transparent; cursor:pointer; transition:border-color .2s; position:relative;
+    }
+    .thumb img{ width:100%; height:100%; object-fit:cover; display:block; filter:brightness(.55); transition:filter .2s; }
+    .thumb.active{ border-color:var(--gold); }
+    .thumb.active img{ filter:brightness(1); }
+    .thumb:hover img{ filter:brightness(.8); }
+    .thumb-num{ position:absolute; bottom:2px; right:4px; font-size:9px; color:rgba(255,255,255,.5); font-weight:600; }
+    .top-bar{
+      position:fixed; top:0; left:0; right:0; z-index:20; padding:16px 32px;
+      display:flex; justify-content:space-between; align-items:center;
+      background:linear-gradient(to bottom,rgba(6,12,4,.8),transparent);
+    }
+    .brand{
+      font-family:'Playfair Display',serif; font-size:13px; font-weight:700;
+      color:rgba(255,255,255,.5); text-decoration:none; letter-spacing:1px;
+    }
+    .brand em{ color:var(--gold); font-style:normal; }
+    .top-title{ font-size:10px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.22); }
+    .back-link{ font-size:12px; color:rgba(255,255,255,.3); text-decoration:none; transition:color .2s; }
+    .back-link:hover{ color:var(--gold); }
+    .progress-line{
+      position:fixed; top:0; left:0; height:2px;
+      background:linear-gradient(90deg,var(--green),var(--gold));
+      z-index:100; transition:width .4s ease;
+    }
+    .key-hint{
+      position:fixed; bottom:24px; right:440px; z-index:20;
+      display:flex; gap:5px; align-items:center;
+      opacity:.3; font-size:11px; color:#fff;
+      animation:kfade 4s 7s ease forwards;
+    }
+    @keyframes kfade{ 0%{opacity:.3} 80%{opacity:.3} 100%{opacity:0} }
+    .key{ border:1px solid rgba(255,255,255,.35); border-radius:4px; padding:2px 6px; font-size:10px; }
+
+    /* MOBILE */
+    @media(max-width:900px){
+      .canvas{ grid-template-columns:1fr; }
+      .img-fade{ background:linear-gradient(0deg,rgba(6,12,4,.9) 0%,rgba(6,12,4,.3) 55%,transparent 100%); }
+      .info-side{
+        position:fixed; bottom:0; left:0; right:0;
+        background:transparent; padding:20px 24px 90px;
+        justify-content:flex-end; max-height:60vh;
+      }
+      .info-side::before{ display:none; }
+      .zone-name{ font-size:32px; }
+      .feats{ flex-direction:row; flex-wrap:wrap; gap:8px; }
+      .feat{ padding:8px 12px; }
+      .feat-text small{ display:none; }
+      .nav-bar{ right:0; }
+      .key-hint{ display:none; }
+      .top-title{ display:none; }
+      .wa-btn{ display:none; }
+      .i-logo{ width:150px; height:150px; }
+      .i-halo{ width:340px; height:340px; }
+      .i-title{ font-size:24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     INTRO
+══════════════════════════════════════ -->
+<div id="intro">
+  <div class="i-halo"></div>
+
+  <!-- Botanical illustration — PANTALLA COMPLETA — vines en las 4 esquinas -->
+  <svg class="i-botanico" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+
+    <!-- ══ BRAZO IZQUIERDO — pivot (700,900) — sube a esquina superior-izquierda ══ -->
+    <g class="arm-l">
+
+      <!-- Tallo principal izquierdo — base centro → esquina sup-izq -->
+      <path class="vine v1"
+        d="M 700 900 C 640 760, 520 590, 360 420 C 220 270, 120 170, 40 50"
+        stroke="#c8a84b" stroke-width="2.4" opacity=".68"/>
+
+      <!-- Vine base izquierdo — se extiende por todo el borde inferior -->
+      <path class="vine v2"
+        d="M 700 900 C 580 872, 400 860, 210 852 C 90 847, -20 845, -80 844"
+        stroke="#c8a84b" stroke-width="1.8" opacity=".52"/>
+
+      <!-- Rama media izquierda — brota del tallo principal -->
+      <path class="vine v5"
+        d="M 480 610 C 430 565, 360 542, 280 535 C 210 530, 145 538, 85 548"
+        stroke="#c8a84b" stroke-width="1.5" opacity=".60"/>
+
+      <!-- Zarcillo izquierdo — brota más arriba -->
+      <path class="vine v7"
+        d="M 360 420 C 310 372, 250 345, 185 335 C 130 326, 80 330, 38 338"
+        stroke="#c8a84b" stroke-width="1.3" opacity=".52"/>
+
+      <!-- Tendril espiral izquierdo -->
+      <path class="vine v9"
+        d="M 280 535 C 252 512, 235 522, 222 514 C 210 507, 213 492, 202 483 C 192 474, 180 476, 172 468"
+        stroke="#c8a84b" stroke-width="1.1" opacity=".44"/>
+
+      <!-- Extensión superior izquierda — desde el tip del tallo sube por el borde superior -->
+      <path class="vine v11"
+        d="M 40 50 C 130 28, 290 20, 470 36 C 580 44, 650 62, 688 58"
+        stroke="#c8a84b" stroke-width="1.2" opacity=".48"/>
+
+      <!-- Ramas pequeñas del tallo -->
+      <path class="vine v13"
+        d="M 520 560 C 490 535, 455 528, 416 532"
+        stroke="#c8a84b" stroke-width="1" opacity=".42"/>
+
+      <!-- ── FLORES lado izquierdo ── -->
+
+      <!-- Flor grande — esquina sup-izq (tip del tallo) -->
+      <g class="bloom b1" transform="translate(40,50)">
+        <circle r="11" fill="rgba(200,168,75,.45)"/>
+        <circle r="5"  fill="rgba(200,168,75,.85)"/>
+        <path d="M0,-7 Q6,-13 0,-20 Q-6,-13 0,-7" fill="rgba(200,168,75,.65)" transform="rotate(0)"/>
+        <path d="M0,-7 Q6,-13 0,-20 Q-6,-13 0,-7" fill="rgba(200,168,75,.65)" transform="rotate(60)"/>
+        <path d="M0,-7 Q6,-13 0,-20 Q-6,-13 0,-7" fill="rgba(200,168,75,.65)" transform="rotate(120)"/>
+        <path d="M0,-7 Q6,-13 0,-20 Q-6,-13 0,-7" fill="rgba(200,168,75,.65)" transform="rotate(180)"/>
+        <path d="M0,-7 Q6,-13 0,-20 Q-6,-13 0,-7" fill="rgba(200,168,75,.65)" transform="rotate(240)"/>
+        <path d="M0,-7 Q6,-13 0,-20 Q-6,-13 0,-7" fill="rgba(200,168,75,.65)" transform="rotate(300)"/>
+      </g>
+
+      <!-- Flor mediana — mitad tallo izq -->
+      <g class="bloom b3" transform="translate(360,420)">
+        <circle r="7.5" fill="rgba(200,168,75,.50)"/>
+        <circle r="3"   fill="rgba(200,168,75,.88)"/>
+        <path d="M0,-6 Q5,-10 0,-16 Q-5,-10 0,-6" fill="rgba(200,168,75,.60)" transform="rotate(0)"/>
+        <path d="M0,-6 Q5,-10 0,-16 Q-5,-10 0,-6" fill="rgba(200,168,75,.60)" transform="rotate(72)"/>
+        <path d="M0,-6 Q5,-10 0,-16 Q-5,-10 0,-6" fill="rgba(200,168,75,.60)" transform="rotate(144)"/>
+        <path d="M0,-6 Q5,-10 0,-16 Q-5,-10 0,-6" fill="rgba(200,168,75,.60)" transform="rotate(216)"/>
+        <path d="M0,-6 Q5,-10 0,-16 Q-5,-10 0,-6" fill="rgba(200,168,75,.60)" transform="rotate(288)"/>
+      </g>
+
+      <!-- Flor mediana — punta rama media -->
+      <g class="bloom b5" transform="translate(85,548)">
+        <circle r="6" fill="rgba(200,168,75,.48)"/>
+        <circle r="2.5" fill="rgba(200,168,75,.82)"/>
+        <path d="M0,-5 Q4,-9 0,-14 Q-4,-9 0,-5" fill="rgba(200,168,75,.58)" transform="rotate(0)"/>
+        <path d="M0,-5 Q4,-9 0,-14 Q-4,-9 0,-5" fill="rgba(200,168,75,.58)" transform="rotate(72)"/>
+        <path d="M0,-5 Q4,-9 0,-14 Q-4,-9 0,-5" fill="rgba(200,168,75,.58)" transform="rotate(144)"/>
+        <path d="M0,-5 Q4,-9 0,-14 Q-4,-9 0,-5" fill="rgba(200,168,75,.58)" transform="rotate(216)"/>
+        <path d="M0,-5 Q4,-9 0,-14 Q-4,-9 0,-5" fill="rgba(200,168,75,.58)" transform="rotate(288)"/>
+      </g>
+
+      <!-- Flor pequeña — tip extensión superior -->
+      <g class="bloom b9" transform="translate(470,36)">
+        <circle r="5" fill="rgba(200,168,75,.52)"/>
+        <path d="M0,-4 Q3,-7 0,-11 Q-3,-7 0,-4" fill="rgba(200,168,75,.60)" transform="rotate(0)"/>
+        <path d="M0,-4 Q3,-7 0,-11 Q-3,-7 0,-4" fill="rgba(200,168,75,.60)" transform="rotate(90)"/>
+        <path d="M0,-4 Q3,-7 0,-11 Q-3,-7 0,-4" fill="rgba(200,168,75,.60)" transform="rotate(180)"/>
+        <path d="M0,-4 Q3,-7 0,-11 Q-3,-7 0,-4" fill="rgba(200,168,75,.60)" transform="rotate(270)"/>
+      </g>
+
+      <!-- Hojas a lo largo del tallo principal -->
+      <g class="bloom b7" transform="translate(520,580) rotate(-38)">
+        <path d="M0,0 C10,-11 10,-28 0,-34 C-10,-28 -10,-11 0,0 Z" fill="rgba(200,168,75,.55)"/>
+      </g>
+      <g class="bloom b11" transform="translate(200,840) rotate(-12)">
+        <path d="M0,0 C8,-9 8,-22 0,-27 C-8,-22 -8,-9 0,0 Z" fill="rgba(200,168,75,.44)"/>
+      </g>
+
+    </g><!-- /arm-l -->
+
+    <!-- ══ BRAZO DERECHO — pivot (700,900) — sube a esquina superior-derecha ══ -->
+    <g class="arm-r">
+
+      <!-- Tallo principal derecho -->
+      <path class="vine v3"
+        d="M 700 900 C 760 760, 880 590, 1040 420 C 1180 270, 1280 170, 1360 50"
+        stroke="#c8a84b" stroke-width="2.4" opacity=".68"/>
+
+      <!-- Vine base derecho -->
+      <path class="vine v4"
+        d="M 700 900 C 820 872, 1000 860, 1190 852 C 1310 847, 1420 845, 1480 844"
+        stroke="#c8a84b" stroke-width="1.8" opacity=".52"/>
+
+      <!-- Rama media derecha -->
+      <path class="vine v6"
+        d="M 920 610 C 970 565, 1040 542, 1120 535 C 1190 530, 1255 538, 1315 548"
+        stroke="#c8a84b" stroke-width="1.5" opacity=".60"/>
+
+      <!-- Zarcillo derecho -->
+      <path class="vine v8"
+        d="M 1040 420 C 1090 372, 1150 345, 1215 335 C 1270 326, 1320 330, 1362 338"
+        stroke="#c8a84b" stroke-width="1.3" opacity=".52"/>
+
+      <!-- Tendril espiral derecho -->
+      <path class="vine v10"
+        d="M 1120 535 C 1148 512, 1165 522, 1178 514 C 1190 507, 1187 492, 1198 483 C 1208 474, 1220 476, 1228 468"
+        stroke="#c8a84b" stroke-width="1.1" opacity=".44"/>
+
+      <!-- Extensión superior derecha -->
+      <path class="vine v12"
+        d="M 1360 50 C 1270 28, 1110 20, 930 36 C 820 44, 750 62, 712 58"
+        stroke="#c8a84b" stroke-width="1.2" opacity=".48"/>
+
+      <!-- Ramas pequeñas derecho -->
+      <path class="vine v14"
+        d="M 880 560 C 910 535, 945 528, 984 532"
+        stroke="#c8a84b" stroke-width="1" opacity=".42"/>
+
+      <!-- ── FLORES lado derecho ── -->
+
+      <!-- Flor grande — esquina sup-der -->
+      <g class="bloom b2" transform="translate(1360,50)">
+        <circle r="11" fill="rgba(200,168,75,.45)"/>
+        <circle r="5"  fill="rgba(200,168,75,.85)"/>
+        <path d="M0,-7 Q6,-13 0,-20 Q-6,-13 0,-7" fill="rgba(200,168,75,.65)" transform="rotate(0)"/>
+        <path d="M0,-7 Q6,-13 0,-20 Q-6,-13 0,-7" fill="rgba(200,168,75,.65)" transform="rotate(60)"/>
+        <path d="M0,-7 Q6,-13 0,-20 Q-6,-13 0,-7" fill="rgba(200,168,75,.65)" transform="rotate(120)"/>
+        <path d="M0,-7 Q6,-13 0,-20 Q-6,-13 0,-7" fill="rgba(200,168,75,.65)" transform="rotate(180)"/>
+        <path d="M0,-7 Q6,-13 0,-20 Q-6,-13 0,-7" fill="rgba(200,168,75,.65)" transform="rotate(240)"/>
+        <path d="M0,-7 Q6,-13 0,-20 Q-6,-13 0,-7" fill="rgba(200,168,75,.65)" transform="rotate(300)"/>
+      </g>
+
+      <!-- Flor mediana — mitad tallo der -->
+      <g class="bloom b4" transform="translate(1040,420)">
+        <circle r="7.5" fill="rgba(200,168,75,.50)"/>
+        <circle r="3"   fill="rgba(200,168,75,.88)"/>
+        <path d="M0,-6 Q5,-10 0,-16 Q-5,-10 0,-6" fill="rgba(200,168,75,.60)" transform="rotate(0)"/>
+        <path d="M0,-6 Q5,-10 0,-16 Q-5,-10 0,-6" fill="rgba(200,168,75,.60)" transform="rotate(72)"/>
+        <path d="M0,-6 Q5,-10 0,-16 Q-5,-10 0,-6" fill="rgba(200,168,75,.60)" transform="rotate(144)"/>
+        <path d="M0,-6 Q5,-10 0,-16 Q-5,-10 0,-6" fill="rgba(200,168,75,.60)" transform="rotate(216)"/>
+        <path d="M0,-6 Q5,-10 0,-16 Q-5,-10 0,-6" fill="rgba(200,168,75,.60)" transform="rotate(288)"/>
+      </g>
+
+      <!-- Flor mediana — punta rama media der -->
+      <g class="bloom b6" transform="translate(1315,548)">
+        <circle r="6" fill="rgba(200,168,75,.48)"/>
+        <circle r="2.5" fill="rgba(200,168,75,.82)"/>
+        <path d="M0,-5 Q4,-9 0,-14 Q-4,-9 0,-5" fill="rgba(200,168,75,.58)" transform="rotate(0)"/>
+        <path d="M0,-5 Q4,-9 0,-14 Q-4,-9 0,-5" fill="rgba(200,168,75,.58)" transform="rotate(72)"/>
+        <path d="M0,-5 Q4,-9 0,-14 Q-4,-9 0,-5" fill="rgba(200,168,75,.58)" transform="rotate(144)"/>
+        <path d="M0,-5 Q4,-9 0,-14 Q-4,-9 0,-5" fill="rgba(200,168,75,.58)" transform="rotate(216)"/>
+        <path d="M0,-5 Q4,-9 0,-14 Q-4,-9 0,-5" fill="rgba(200,168,75,.58)" transform="rotate(288)"/>
+      </g>
+
+      <!-- Flor pequeña — tip extensión sup der -->
+      <g class="bloom b10" transform="translate(930,36)">
+        <circle r="5" fill="rgba(200,168,75,.52)"/>
+        <path d="M0,-4 Q3,-7 0,-11 Q-3,-7 0,-4" fill="rgba(200,168,75,.60)" transform="rotate(0)"/>
+        <path d="M0,-4 Q3,-7 0,-11 Q-3,-7 0,-4" fill="rgba(200,168,75,.60)" transform="rotate(90)"/>
+        <path d="M0,-4 Q3,-7 0,-11 Q-3,-7 0,-4" fill="rgba(200,168,75,.60)" transform="rotate(180)"/>
+        <path d="M0,-4 Q3,-7 0,-11 Q-3,-7 0,-4" fill="rgba(200,168,75,.60)" transform="rotate(270)"/>
+      </g>
+
+      <!-- Hojas tallo derecho -->
+      <g class="bloom b8" transform="translate(880,580) rotate(38)">
+        <path d="M0,0 C10,-11 10,-28 0,-34 C-10,-28 -10,-11 0,0 Z" fill="rgba(200,168,75,.55)"/>
+      </g>
+      <g class="bloom b12" transform="translate(1200,840) rotate(12)">
+        <path d="M0,0 C8,-9 8,-22 0,-27 C-8,-22 -8,-9 0,0 Z" fill="rgba(200,168,75,.44)"/>
+      </g>
+
+    </g><!-- /arm-r -->
+
+    <!-- ══ CENTRO — raíz vertical que sube hacia el logo ══ -->
+    <path class="vine"
+      d="M 700 900 C 700 820, 700 720, 700 620 C 700 530, 698 460, 694 390"
+      stroke="#c8a84b" stroke-width="1.6" opacity=".55"
+      style="stroke-dasharray:520;stroke-dashoffset:520;animation:vine-grow .8s .08s ease-out forwards"/>
+
+    <!-- Rama central izquierda — del tallo central -->
+    <path class="vine"
+      d="M 700 680 C 668 650, 630 638, 588 640"
+      stroke="#c8a84b" stroke-width="1.1" opacity=".42"
+      style="stroke-dasharray:130;stroke-dashoffset:130;animation:vine-grow .4s .9s ease-out forwards"/>
+    <!-- Rama central derecha -->
+    <path class="vine"
+      d="M 700 680 C 732 650, 770 638, 812 640"
+      stroke="#c8a84b" stroke-width="1.1" opacity=".42"
+      style="stroke-dasharray:130;stroke-dashoffset:130;animation:vine-grow .4s .92s ease-out forwards"/>
+
+  </svg>
+
+  <!-- Logo -->
+  <div class="i-logo-wrap">
+    <div class="i-logo-glow"></div>
+    <img class="i-logo"
+         src="./images/paseos-cibeles-logo-cp.png"
+         alt="Paseo Cibeles"
+         onerror="this.style.opacity='0'; this.style.animation='none'"/>
+  </div>
+
+  <!-- Separador dorado -->
+  <div class="i-rule"><div class="i-rule-dot"></div></div>
+
+  <!-- Nombre -->
+  <div class="i-title">Paseo Cibeles</div>
+
+  <!-- Tagline -->
+  <div class="i-sub">Un espacio para vivir, caminar y descubrir</div>
+
+  <!-- Sonido: se muestra la versión correcta vía JS -->
+  <div class="i-sound-row" id="soundGate" style="display:none">
+    <button class="i-btn-experience" onclick="startWithSound()">
+      <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+      Activar experiencia completa
+    </button>
+    <button class="i-btn-skip" onclick="startWithoutSound()">Entrar sin sonido →</button>
+  </div>
+
+  <div class="i-sound-auto" id="soundAuto" style="display:none">
+    <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+    Irapuato · Guanajuato
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     MAIN APP
+══════════════════════════════════════ -->
+<div class="progress-line" id="progressLine"></div>
+<div class="top-bar">
+  <a class="brand" href="./index.html">RAÍZ <em>INMOBILIARIA DEL BAJÍO</em></a>
+  <span class="top-title">Áreas Verdes · Lo que viene</span>
+  <a class="back-link" href="./paseos-cibeles.html">← Volver al desarrollo</a>
+</div>
+<div class="key-hint">
+  <span class="key">←</span><span class="key">→</span> navegar
+</div>
+<div class="canvas">
+  <div class="img-side" id="imgSide">
+    <div class="img-fade"></div>
+    <div class="img-bottom-fade"></div>
+    <div class="click-prev" onclick="go(-1)"></div>
+    <div class="click-next" onclick="go(1)"></div>
+    <div class="img-counter" id="imgCounter"><span>1</span> / 9</div>
+  </div>
+  <div class="info-side" id="infoSide">
+    <div class="phase" id="phaseEl"><span class="blink"></span><span id="phaseText"></span></div>
+    <div class="zone-name" id="zoneNameEl"></div>
+    <div class="zone-tag"  id="zoneTagEl"></div>
+    <div class="feats"     id="featsEl"></div>
+    <a href="https://wa.me/524622875881?text=Hola,%20vi%20el%20recorrido%20de%20Paseos%20Cibeles%20y%20me%20interesa%20saber%20más"
+       class="wa-btn" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Me interesa un terreno
+    </a>
+  </div>
+</div>
+<div class="nav-bar">
+  <button class="nav-arrow" id="btnPrev" onclick="go(-1)">‹</button>
+  <div class="thumbs" id="thumbsWrap"></div>
+  <button class="nav-arrow" id="btnNext" onclick="go(1)">›</button>
+</div>
+
+<script>
+// ════════════════════════════════════════
+//  PARTÍCULAS DORADAS
+// ════════════════════════════════════════
+(function(){
+  const intro = document.getElementById('intro');
+  for(let i=0;i<20;i++){
+    const el = document.createElement('div');
+    el.className = 'ipt';
+    const sz  = 2+Math.random()*5;
+    const op  = .06+Math.random()*.16;
+    el.style.cssText = `
+      left:${Math.random()*100}%;
+      bottom:${Math.random()*35}%;
+      width:${sz}px; height:${sz}px;
+      background:radial-gradient(circle, rgba(200,168,75,${op}) 0%, transparent 70%);
+      --d:${4+Math.random()*6}s;
+      --dl:${Math.random()*5}s;
+      --dy:${-(50+Math.random()*80)}px;
+      --dx:${(Math.random()*40-20)}px;
+    `;
+    intro.appendChild(el);
+  }
+})();
+
+// ════════════════════════════════════════
+//  SONIDO — Web Audio API (sintetizado)
+// ════════════════════════════════════════
+let audioCtx = null;
+let introGone = false;
+let soundStarted = false;
+
+function buildSound(ctx){
+  const now = ctx.currentTime;
+  // Pad cálido: acorde de C mayor (Do, Mi, Sol)
+  const pad = ctx.createGain();
+  pad.gain.setValueAtTime(0, now);
+  pad.gain.linearRampToValueAtTime(.08, now+1.2);
+  pad.gain.setValueAtTime(.08, now+3.2);
+  pad.gain.linearRampToValueAtTime(0, now+5.5);
+  pad.connect(ctx.destination);
+
+  [[261.63,0],[329.63,.12],[392.00,.22]].forEach(([f,d])=>{
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type='sine'; o.frequency.value=f;
+    g.gain.value=.04;
+    o.connect(g); g.connect(pad);
+    o.start(now+d); o.stop(now+6);
+  });
+
+  // Campanilla dorada al aparecer el logo (~1.8s)
+  setTimeout(()=>{
+    if(!audioCtx||audioCtx.state==='closed') return;
+    const t=audioCtx.currentTime;
+    [1046.5,1318.5,1568].forEach((f,i)=>{
+      const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+      o.type='sine'; o.frequency.value=f;
+      const ti=t+i*.04;
+      g.gain.setValueAtTime(.028,ti);
+      g.gain.exponentialRampToValueAtTime(.0001,ti+2.8);
+      o.connect(g); g.connect(audioCtx.destination);
+      o.start(ti); o.stop(ti+3);
+    });
+  },1750);
+}
+
+function tryAutoSound(){
+  try{
+    audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended'){
+      showSoundGate(); return;
+    }
+    buildSound(audioCtx);
+    soundStarted=true;
+    document.getElementById('soundAuto').style.display='flex';
+  }catch(e){
+    showSoundGate();
+  }
+}
+function showSoundGate(){
+  document.getElementById('soundGate').style.display='flex';
+}
+function startWithSound(){
+  if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  audioCtx.resume().then(()=>{ buildSound(audioCtx); soundStarted=true; });
+  document.getElementById('soundGate').style.display='none';
+  document.getElementById('soundAuto').style.display='flex';
+  // Si ya debería haberse ido la intro, salir
+  scheduleExit();
+}
+function startWithoutSound(){
+  document.getElementById('soundGate').style.display='none';
+  scheduleExit();
+}
+
+// ════════════════════════════════════════
+//  REVEAL
+// ════════════════════════════════════════
+let exitScheduled=false;
+function scheduleExit(){
+  if(exitScheduled) return;
+  exitScheduled=true;
+  setTimeout(triggerExit, 1200);
+}
+function triggerExit(){
+  if(introGone) return;
+  introGone=true;
+  const el=document.getElementById('intro');
+  el.classList.add('exit');
+  setTimeout(()=>el.remove(), 1050);
+  // Guardar en session para no repetir
+  try{ sessionStorage.setItem('pc_intro','1'); }catch(e){}
+}
+
+// ════════════════════════════════════════
+//  PÉTALO FLOTANTES — organics que ascienden
+// ════════════════════════════════════════
+function createFloatingPetals(){
+  const intro = document.getElementById('intro');
+  if(!intro) return;
+  const COUNT = 16;
+  const shapes = [
+    '60% 40% 60% 40% / 40% 60% 40% 60%',
+    '50% 80% 50% 20% / 25% 60% 40% 75%',
+    '70% 30% 50% 50% / 50% 50% 70% 30%',
+    '35% 65% 60% 40% / 40% 60% 35% 65%',
+    '80% 20% 80% 20% / 20% 80% 20% 80%',
+  ];
+  for(let i=0;i<COUNT;i++){
+    const el = document.createElement('div');
+    el.className = 'fpetal';
+    const size   = 4 + Math.random() * 10;          // 4–14px
+    const left   = 10 + Math.random() * 80;          // 10–90% horizontal
+    const bottom = -20 + Math.random() * 40;          // start near bottom
+    const dy     = -(60 + Math.random() * 35);        // rise 60–95vh
+    const dx     = (Math.random() - .5) * 160;        // drift ±80px
+    const rot    = (Math.random() - .5) * 540;        // spin ±270deg
+    const dur    = 5 + Math.random() * 8;             // 5–13s cycle
+    const delay  = -(Math.random() * 12);             // stagger starts (negative = pre-run)
+    const op     = .28 + Math.random() * .40;         // 28–68% opacity
+    const shape  = shapes[Math.floor(Math.random() * shapes.length)];
+
+    el.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${left}%; bottom:${bottom}px;
+      border-radius:${shape};
+      background:radial-gradient(ellipse, rgba(200,168,75,${op}) 0%, transparent 70%);
+      --dur:${dur}s; --delay:${delay}s;
+      --dy:${dy}vh; --dx:${dx}px; --rot:${rot}deg; --op:${op};
+    `;
+    intro.appendChild(el);
+  }
+}
+
+// ════════════════════════════════════════
+//  PARTÍCULAS DE LUZ (halo)
+// ════════════════════════════════════════
+function spawnLightParticles(){
+  const intro = document.getElementById('intro');
+  if(!intro) return;
+  for(let i=0;i<8;i++){
+    const el = document.createElement('div');
+    el.className = 'ipt';
+    const size = 3 + Math.random()*8;
+    el.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${20+Math.random()*60}%;
+      top:${10+Math.random()*80}%;
+      --d:${4+Math.random()*6}s;
+      --dl:${-Math.random()*8}s;
+      --dy:${-30-Math.random()*120}px;
+      --dx:${(Math.random()-.5)*80}px;
+      background:radial-gradient(circle, rgba(200,168,75,${.08+Math.random()*.18}) 0%, transparent 70%);
+    `.replace('VAR_OP','');
+    intro.appendChild(el);
+  }
+}
+
+// ════════════════════════════════════════
+//  INICIO
+// ════════════════════════════════════════
+// Verificar sesión — quitar "true" para activar la lógica de "solo 1 vez"
+const DEV_ALWAYS_SHOW = true;
+if(!DEV_ALWAYS_SHOW && sessionStorage.getItem('pc_intro')){
+  document.getElementById('intro').remove();
+  introGone=true;
+} else {
+  // Spawn petals + particles as intro loads
+  createFloatingPetals();
+  spawnLightParticles();
+  // Intentar sonido al cargar
+  setTimeout(tryAutoSound, 400);
+  // Auto-exit a los 5.5s si el usuario no hizo nada
+  setTimeout(()=>{
+    if(!exitScheduled) scheduleExit();
+  }, 5500);
+  // Click en intro para saltar
+  document.getElementById('intro').addEventListener('click', e=>{
+    if(e.target.closest('button')) return; // no disparar desde botones
+    if(!exitScheduled) scheduleExit();
+  });
+}
+
+// ════════════════════════════════════════
+//  ZONES
+// ════════════════════════════════════════
+const ZONES = [
+  {
+    phase:'Acceso · Fase 1',
+    name:'La entrada', nameEm:'que impresiona',
+    tag:'Lo primero que verás al llegar a Paseos Cibeles',
+    img:'./images/paseos-cibeles-foto-acceso-monumental-cgi.jpg',
+    feats:[
+      {icon:'🏛',label:'Hito monumental',  desc:'Pérgola de concreto y acero corten'},
+      {icon:'🌵',label:'Jardín desértico', desc:'Cactos saguaro, agaves y rocas naturales'},
+      {icon:'🪞',label:'Espejo de agua',   desc:'Elemento escultural en el acceso'},
+    ]
+  },
+  {
+    phase:'El Valle · Fase 2',
+    name:'Playground', nameEm:'"El Valle"',
+    tag:'El espacio donde los niños tienen su propio mundo',
+    img:'./images/paseos-cibeles-foto-el-valle-playground-familias.jpg',
+    feats:[
+      {icon:'🛝',label:'Slides en mounds de pasto',desc:'Toboganes integrados al terreno natural'},
+      {icon:'🏖',label:'Arenero y zona de juego', desc:'Arena de cuarzo con mobiliario seguro'},
+      {icon:'🌳',label:'Arbolado maduro',          desc:'Sombra natural en todo el playground'},
+    ]
+  },
+  {
+    phase:'El Valle · Vista aérea',
+    name:'Circuito', nameEm:'de caucho',
+    tag:'Trayecto completo de actividad para todas las edades',
+    img:'./images/paseos-cibeles-foto-el-valle-circuito-aereo.jpg',
+    feats:[
+      {icon:'⭕',label:'Circuito de caucho', desc:'Superficie de impacto seguro, 360°'},
+      {icon:'🧗',label:'Talud de escalada',  desc:'Con barrera vegetal de protección'},
+      {icon:'🚸',label:'Acceso controlado',  desc:'3 entradas al área infantil'},
+    ]
+  },
+  {
+    phase:'Wellness Garden · Fase 3',
+    name:'Jardín', nameEm:'de bienestar',
+    tag:'Para los que necesitan un espacio de calma y movimiento',
+    img:'./images/paseos-cibeles-foto-wellness-garden-yoga.jpg',
+    feats:[
+      {icon:'🧘',label:'Área de yoga al aire libre',desc:'Espacio sombreado con piso nivelado'},
+      {icon:'🌿',label:'Vegetación envolvente',     desc:'Jardín tropical de alta privacidad'},
+      {icon:'🌬',label:'Microclima natural',        desc:'Diseñado para bajar la temperatura'},
+    ]
+  },
+  {
+    phase:'Lomerío · Fase 3',
+    name:'Hamacas', nameEm:'y descanso',
+    tag:'El parque de los adultos. Para bajar el ritmo.',
+    img:'./images/paseos-cibeles-foto-lomerio-hamacas.jpg',
+    feats:[
+      {icon:'🪑',label:'Hamacas de descanso',desc:'Zonas de usos múltiples sombreadas'},
+      {icon:'🌳',label:'Arbolado denso',      desc:'Cobertura vegetal de alto impacto'},
+      {icon:'🌿',label:'Jardines escondidos', desc:'Rincones íntimos entre la vegetación'},
+    ]
+  },
+  {
+    phase:'Lomerío · Jardines escondidos',
+    name:'Rincones', nameEm:'entre el pasto',
+    tag:'Los espacios que solo conocen los que saben mirar',
+    img:'./images/paseos-cibeles-foto-jardines-escondidos-pasto.jpg',
+    feats:[
+      {icon:'🌾',label:'Pastos ornamentales',desc:'Especies nativas de alto contraste'},
+      {icon:'🪑',label:'Bancas escondidas',  desc:'Ocultas entre la vegetación densa'},
+      {icon:'🎨',label:'Zona de arte',       desc:'Instalaciones entre el follaje'},
+    ]
+  },
+  {
+    phase:'Parque de Encuentro · Fase 3',
+    name:'El fuego', nameEm:'de comunidad',
+    tag:'El espacio que convierte vecinos en amigos',
+    img:'./images/paseos-cibeles-foto-parque-encuentro-fogata.jpg',
+    feats:[
+      {icon:'🔥',label:'Fogón comunitario',    desc:'Punto de encuentro circular'},
+      {icon:'🌲',label:'Bosque integrado',     desc:'Árboles maduros en todo el espacio'},
+      {icon:'🌅',label:'Luz natural filtrada', desc:'Diseñado para la hora dorada'},
+    ]
+  },
+  {
+    phase:'Foro al Aire Libre · Fase 5',
+    name:'Anfiteatro', nameEm:'de pasto',
+    tag:'Para conciertos, eventos y reuniones de la comunidad',
+    img:'./images/paseos-cibeles-foto-foro-anfiteatro-pasto.jpg',
+    feats:[
+      {icon:'🎭',label:'Foro semicircular',         desc:'Bancas de madera en talud de pasto'},
+      {icon:'🎵',label:'Para eventos comunitarios', desc:'Conciertos, talleres, convivencias'},
+      {icon:'🌿',label:'Pasto natural todo el año', desc:'Espacio verde de uso continuo'},
+    ]
+  },
+  {
+    phase:'Recorrido Etnobotánico · Fase 4',
+    name:'Caminar', nameEm:'entre plantas',
+    tag:'El sendero que conecta todo el fraccionamiento',
+    img:'./images/paseos-cibeles-foto-recorrido-tabique-botanico.jpg',
+    feats:[
+      {icon:'🚶',label:'Camino de tabique serpenteante',desc:'Diseño curvo que invita a explorar'},
+      {icon:'🌺',label:'Jardín etnobotánico',           desc:'Plantas nativas con identificación'},
+      {icon:'👶',label:'Para todas las edades',         desc:'Apto para niños, adultos y mascotas'},
+    ]
+  },
+];
+
+// ════════════════════════════════════════
+//  BUILD + RENDER
+// ════════════════════════════════════════
+const imgSide=document.getElementById('imgSide');
+const thumbsWrap=document.getElementById('thumbsWrap');
+ZONES.forEach((z,i)=>{
+  const s=document.createElement('div');
+  s.className='img-slide'+(i===0?' active':'');
+  s.style.backgroundImage=`url('${z.img}')`;
+  s.id='slide-'+i; imgSide.appendChild(s);
+  const t=document.createElement('div');
+  t.className='thumb'+(i===0?' active':'');
+  t.id='thumb-'+i; t.onclick=()=>goTo(i);
+  t.innerHTML=`<img src="${z.img}" alt="${z.name}" loading="lazy"/><span class="thumb-num">${i+1}</span>`;
+  thumbsWrap.appendChild(t);
+});
+
+let cur=0,busy=false;
+const infoSide=document.getElementById('infoSide');
+const phaseEl=document.getElementById('phaseText');
+const zoneNameEl=document.getElementById('zoneNameEl');
+const zoneTagEl=document.getElementById('zoneTagEl');
+const featsEl=document.getElementById('featsEl');
+const imgCounter=document.getElementById('imgCounter');
+const progressLine=document.getElementById('progressLine');
+
+function renderInfo(z,idx){
+  infoSide.classList.remove('ready');
+  setTimeout(()=>{
+    phaseEl.textContent=z.phase;
+    zoneNameEl.innerHTML=z.name+(z.nameEm?`<em>${z.nameEm}</em>`:'');
+    zoneTagEl.textContent=z.tag;
+    featsEl.innerHTML=z.feats.map(f=>`
+      <div class="feat">
+        <span class="feat-icon">${f.icon}</span>
+        <div class="feat-text">${f.label}<small>${f.desc}</small></div>
+      </div>`).join('');
+    imgCounter.innerHTML=`<span>${idx+1}</span> / ${ZONES.length}`;
+    progressLine.style.width=((idx+1)/ZONES.length*100)+'%';
+    requestAnimationFrame(()=>requestAnimationFrame(()=>infoSide.classList.add('ready')));
+  },180);
+}
+
+function goTo(idx){
+  if(busy||idx===cur||idx<0||idx>=ZONES.length) return;
+  busy=true;
+  document.getElementById('slide-'+cur).classList.remove('active');
+  document.getElementById('thumb-'+cur).classList.remove('active');
+  document.getElementById('slide-'+idx).classList.add('active');
+  document.getElementById('thumb-'+idx).classList.add('active');
+  document.getElementById('thumb-'+idx).scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  document.getElementById('btnPrev').disabled=idx===0;
+  document.getElementById('btnNext').disabled=idx===ZONES.length-1;
+  cur=idx; renderInfo(ZONES[idx],idx);
+  setTimeout(()=>busy=false,700);
+}
+function go(dir){ goTo(cur+dir); }
+
+document.addEventListener('keydown',e=>{
+  if(!introGone){ if(!exitScheduled) scheduleExit(); return; }
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') go(1);
+  if(e.key==='ArrowLeft' ||e.key==='ArrowUp')   go(-1);
+});
+
+let tx=null;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{
+  if(tx===null)return;
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) go(dx<0?1:-1);
+  tx=null;
+},{passive:true});
+
+// Init
+document.getElementById('btnPrev').disabled=true;
+renderInfo(ZONES[0],0);
+setTimeout(()=>infoSide.classList.add('ready'),100);
+</script>
+</body>
+</html>
