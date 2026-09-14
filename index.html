@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Raíz Inmobiliaria del Bajío</title>
-  <meta name="description" content="Raíz Inmobiliaria del Bajío. Terrenos y desarrollos residenciales en Guanajuato. Inversión segura con documentación en regla." />
+  <title>Raíz Inmobiliaria Bajío</title>
+  <meta name="description" content="Raíz Inmobiliaria Bajío. Terrenos y desarrollos residenciales en Guanajuato. Inversión segura con documentación en regla." />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -179,6 +179,44 @@
     .section-title { font-family: 'Playfair Display', serif; font-size: clamp(28px,3.5vw,44px); color: var(--verde); font-weight: 700; line-height: 1.2; }
     .section-sub { color: #888; font-size: 16px; line-height: 1.7; max-width: 520px; }
 
+    /* ── VENDER PROPIEDAD ── */
+    .vender-section {
+      background: var(--blanco);
+      padding: 100px 60px;
+    }
+    .vender-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+    .vender-text .section-tag { margin-bottom: 14px; }
+    .vender-text h2 { font-family: 'Playfair Display', serif; font-size: clamp(28px,3vw,42px); color: var(--verde); font-weight: 700; line-height: 1.2; margin-bottom: 18px; }
+    .vender-text p { color: #666; font-size: 15px; line-height: 1.75; margin-bottom: 12px; }
+    .vender-form { display: flex; flex-direction: column; gap: 14px; }
+    .vender-form input, .vender-form select {
+      padding: 14px 18px; border: 1.5px solid #ddd; border-radius: 2px;
+      font-family: 'Inter', sans-serif; font-size: 14px; color: var(--gris);
+      background: #fafafa; transition: border-color .2s;
+      width: 100%;
+    }
+    .vender-form input:focus, .vender-form select:focus {
+      outline: none; border-color: var(--verde);
+    }
+    .vender-form input::placeholder { color: #aaa; }
+    .vender-btn {
+      background: var(--verde); color: #fff;
+      padding: 16px 28px; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif; font-size: 13px;
+      font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+      transition: background .2s; display: flex; align-items: center; gap: 10px;
+      justify-content: center;
+    }
+    .vender-btn:hover { background: var(--verde-oscuro); }
+    .vender-nota { font-size: 12px; color: #aaa; text-align: center; margin-top: 4px; }
+    @media(max-width: 768px) {
+      .vender-section { padding: 72px 24px; }
+      .vender-inner { grid-template-columns: 1fr; gap: 40px; }
+    }
+
     /* ── NOSOTROS — valores dinámicos ── */
     .nosotros-section {
       background: linear-gradient(160deg, #0d1608 0%, #162410 55%, #0a1205 100%);
@@ -256,12 +294,13 @@
       position: relative; overflow: hidden;
       background: linear-gradient(135deg, #2e1c06, #1a0f02);
     }
-    .ps-img img {
+    .ps-img img, .ps-img video {
       width: 100%; height: 100%; object-fit: cover;
       display: block; opacity: .85;
       transition: transform .7s cubic-bezier(.2,0,.1,1), opacity .4s;
     }
-    .proyecto-split:hover .ps-img img { transform: scale(1.06); opacity: .72; }
+    .proyecto-split:hover .ps-img img,
+    .proyecto-split:hover .ps-img video { transform: scale(1.06); opacity: .72; }
     .ps-img::after {
       content: ''; position: absolute; inset: 0;
       background: linear-gradient(to right, transparent 60%, rgba(20,10,2,.6) 100%);
@@ -394,7 +433,7 @@
 <!-- NAV -->
 <nav id="navbar">
   <div class="nav-logo">
-    <div class="nav-logo-fallback" style="display:block;">RAÍZ <span>INMOBILIARIA DEL BAJÍO</span></div>
+    <div class="nav-logo-fallback" style="display:block;">RAÍZ <span>INMOBILIARIA BAJÍO</span></div>
   </div>
   <ul class="nav-links">
     <li><a href="#nosotros">Nosotros</a></li>
@@ -414,16 +453,92 @@
   <div class="hero-pulse"></div>
   <div class="hero-ring"></div>
   <div class="hero-logo-wrap">
-    <div class="hero-logo-text" id="logoText">RAÍZ<span>INMOBILIARIA DEL BAJÍO</span></div>
+    <div class="hero-logo-text" id="logoText">RAÍZ<span>INMOBILIARIA BAJÍO</span></div>
     <div class="hero-tagline">Tu patrimonio, bien plantado.</div>
     <div class="hero-divider"></div>
-    <div class="hero-sub">Inmobiliaria del Bajío · Guanajuato</div>
+    <div class="hero-sub">Inmobiliaria Bajío · Guanajuato</div>
     <div class="hero-cta-wrap">
       <a href="#proyectos" class="btn-primary">Ver Proyectos</a>
       <a href="#nosotros" class="btn-ghost">Conocer Raíz</a>
     </div>
   </div>
   <div class="hero-scroll"><div class="scroll-line"></div>Explorar</div>
+</section>
+
+<!-- PROYECTOS -->
+<section class="section bg-beige" id="proyectos">
+  <div class="inner">
+    <div class="section-header reveal">
+      <span class="section-tag">Nuestros Proyectos</span>
+      <h2 class="section-title">Donde invertir hoy</h2>
+      <p class="section-sub">Desarrollos diseñados para durar — donde cada terreno es una decisión inteligente.</p>
+    </div>
+
+    <a class="proyecto-split reveal" href="./paseos-cibeles.html">
+      <div class="ps-img">
+        <img src="./images/paseos-cibeles-foto-acceso-monumental-cgi.jpg" alt="Paseo Cibeles — acceso monumental"/>
+      </div>
+      <div class="ps-info">
+        <span class="ps-tag">Terrenos disponibles</span>
+        <img src="./images/paseos-cibeles-logo-cp.png" alt="Paseo Cibeles"
+             style="width:90px;height:90px;object-fit:contain;margin-bottom:16px;display:block;"/>
+        <h3>Paseo Cibeles</h3>
+        <p class="ps-location">Irapuato, Guanajuato</p>
+        <p>Fraccionamiento residencial privado con áreas verdes, seguridad 24/7 y documentación impecable. El lugar donde tu inversión crece.</p>
+        <div class="ps-cta">Conocer el desarrollo <div class="ps-arrow">›</div></div>
+      </div>
+    </a>
+
+    <a class="proyecto-split reveal" href="./terreno-cid.html" style="margin-top:16px; grid-template-columns:2fr 3fr;">
+      <div class="ps-info" style="order:1;">
+        <span class="ps-tag">Terreno estratégico</span>
+        <h3>Terreno CID</h3>
+        <p class="ps-location">Boulevard Villas de Irapuato · Irapuato, Gto.</p>
+        <p>6,462 m² con frente directo al boulevard, uso de suelo mixto y todos los servicios. Un terreno listo para transformarse en la inversión que siempre quisiste.</p>
+        <div class="ps-cta">Ver potencial del terreno <div class="ps-arrow">›</div></div>
+      </div>
+      <div class="ps-img" style="order:2;">
+        <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3F0dvb9d78Ofzcw8u9S14rPCRnP/hf_20260622_043308_2881133f-5921-4680-9591-34308bad96c0.png" alt="Render Policlínica — Terreno CID Irapuato"/>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- TE AYUDAMOS A VENDER -->
+<section class="vender-section" id="vender">
+  <div class="vender-inner">
+
+    <div class="vender-text reveal">
+      <span class="section-tag">Vende con Raíz</span>
+      <h2>Te ayudamos a vender tu propiedad.</h2>
+      <p>Si tienes una casa, terreno o local que quieres vender, nosotros nos encargamos de todo — la promoción, las visitas y el cierre.</p>
+      <p>Platicamos contigo y te damos información <strong>GRATIS</strong> de cómo podemos ayudarte. Usa el código <strong style="color:var(--verde);letter-spacing:.05em;">RAIZWEB</strong> y recibe asesoría sin costo. 🎁</p>
+    </div>
+
+    <div class="reveal">
+      <form class="vender-form" id="formVender" onsubmit="enviarWA(event)">
+        <input type="text"    id="v-nombre"   placeholder="Tu nombre completo"         required />
+        <input type="tel"     id="v-telefono" placeholder="Tu teléfono / WhatsApp"     required />
+        <select id="v-tipo" required>
+          <option value="" disabled selected>Tipo de propiedad</option>
+          <option>Casa</option>
+          <option>Terreno</option>
+          <option>Local comercial</option>
+          <option>Departamento</option>
+          <option>Bodega / nave industrial</option>
+          <option>Otro</option>
+        </select>
+        <input type="text"    id="v-ubicacion" placeholder="Ubicación (colonia, ciudad)" required />
+        <input type="text"    id="v-precio"    placeholder="Precio estimado (ej. $1,500,000)" />
+        <button type="submit" class="vender-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.107.547 4.086 1.504 5.814L.057 23.882a.5.5 0 0 0 .616.612l6.278-1.643A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.511-5.166-1.402l-.37-.22-3.828 1.002 1.02-3.728-.242-.386A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+          Enviar por WhatsApp
+        </button>
+        <p class="vender-nota">Te contactamos en menos de 24 horas.</p>
+      </form>
+    </div>
+
+  </div>
 </section>
 
 <!-- NOSOTROS — Valores -->
@@ -465,38 +580,6 @@
   </div>
 </section>
 
-<!-- PROYECTOS -->
-<section class="section bg-beige" id="proyectos">
-  <div class="inner">
-    <div class="section-header reveal">
-      <span class="section-tag">Nuestros Proyectos</span>
-      <h2 class="section-title">Donde invertir hoy</h2>
-      <p class="section-sub">Desarrollos diseñados para durar — donde cada terreno es una decisión inteligente.</p>
-    </div>
-
-    <a class="proyecto-split reveal" href="./paseos-cibeles.html">
-      <div class="ps-img">
-        <img src="./images/paseos-cibeles-foto-acceso-monumental-cgi.jpg" alt="Paseo Cibeles — acceso monumental"/>
-      </div>
-      <div class="ps-info">
-        <span class="ps-tag">Terrenos disponibles</span>
-        <img src="./images/paseos-cibeles-logo-cp.png" alt="Paseo Cibeles"
-             style="width:90px;height:90px;object-fit:contain;margin-bottom:16px;display:block;"/>
-        <h3>Paseo Cibeles</h3>
-        <p class="ps-location">Irapuato, Guanajuato</p>
-        <p>Fraccionamiento residencial privado con áreas verdes, seguridad 24/7 y documentación impecable. El lugar donde tu inversión crece.</p>
-        <div class="ps-cta">Conocer el desarrollo <div class="ps-arrow">›</div></div>
-      </div>
-    </a>
-
-    <div class="proximos-grid">
-      <div class="proximo"><p>Próximo desarrollo<br/>en camino</p></div>
-      <div class="proximo"><p>Próximo desarrollo<br/>en camino</p></div>
-      <div class="proximo"><p>Próximo desarrollo<br/>en camino</p></div>
-    </div>
-  </div>
-</section>
-
 <!-- FRASE CINEMATIC -->
 <section class="frase-section">
   <div class="frase-inner">
@@ -506,7 +589,7 @@
       <em>Desde la raíz hasta la construcción.</em>
     </p>
     <div class="frase-linea"></div>
-    <p class="frase-autor">Raíz Inmobiliaria del Bajío</p>
+    <p class="frase-autor">Raíz Inmobiliaria Bajío</p>
   </div>
 </section>
 
@@ -528,7 +611,7 @@
 </section>
 
 <footer>
-  <p>© 2026 <strong>Raíz Inmobiliaria del Bajío</strong> — Guanajuato, México. Todos los derechos reservados.</p>
+  <p>© 2026 <strong>Raíz Inmobiliaria Bajío</strong> — Guanajuato, México. Todos los derechos reservados.</p>
 </footer>
 
 <a href="https://wa.me/524622875881?text=Hola,%20me%20interesa%20conocer%20los%20proyectos%20de%20Ra%C3%ADz%20Inmobiliaria" class="wa-float" target="_blank" aria-label="WhatsApp">
@@ -598,6 +681,29 @@
       }
     }, { threshold: 0.4 }).observe(statsBar);
   }
+</script>
+
+<script>
+function enviarWA(e) {
+  e.preventDefault();
+  const nombre   = document.getElementById('v-nombre').value.trim();
+  const telefono = document.getElementById('v-telefono').value.trim();
+  const tipo     = document.getElementById('v-tipo').value;
+  const ubicacion= document.getElementById('v-ubicacion').value.trim();
+  const precio   = document.getElementById('v-precio').value.trim() || 'No especificado';
+
+  const msg = `🏡 Hola, tengo una Casa/Terreno y quisiera que me ayudaran a venderlo. 🔑 CÓDIGO: RAIZWEB
+
+👤 Nombre: ${nombre}
+📱 Teléfono: ${telefono}
+📍 Ubicación: ${ubicacion}
+💰 Precio estimado: ${precio}
+
+¡Quedo en espera, gracias! 😊`;
+
+  const url = `https://wa.me/524622875881?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+}
 </script>
 </body>
 </html>
