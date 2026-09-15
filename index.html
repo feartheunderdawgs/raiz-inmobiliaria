@@ -731,19 +731,82 @@
 </section>
 
 <!-- UBICACIÓN -->
-<section style="background:#f5f0e8; padding:80px 60px;">
-  <div style="max-width:1100px; margin:0 auto;">
-    <span class="section-tag" style="color:var(--dorado); display:block; margin-bottom:12px;">Visítanos</span>
-    <h2 style="font-family:'Playfair Display',serif; font-size:clamp(28px,3vw,42px); color:var(--verde); font-weight:700; margin-bottom:6px;">Nuestras oficinas</h2>
-    <p style="color:#888; font-size:14px; margin-bottom:32px;">Paseo de las Fresas 166, Jardines de Irapuato, Gto.</p>
-    <div style="border-radius:12px; overflow:hidden; box-shadow:0 8px 40px rgba(0,0,0,.1);">
-      <iframe
-        src="https://maps.google.com/maps?q=Paseo+de+las+Fresas+166,+Jardines+de+Irapuato,+Guanajuato,+M%C3%A9xico&output=embed&z=17"
-        width="100%" height="420" style="border:0; display:block;"
-        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-        title="Oficinas Raíz Inmobiliaria Bajío">
-      </iframe>
+<section style="background:#f4ede0; padding:100px 60px; position:relative; overflow:hidden;">
+  <!-- Decoración hojas fondo -->
+  <div style="position:absolute; left:-60px; top:0; opacity:0.12; pointer-events:none;">
+    <svg width="340" height="480" viewBox="0 0 340 480" fill="none">
+      <path d="M170 460 C155 380 90 310 20 220 C70 270 130 320 170 460Z" fill="#1a3020"/>
+      <path d="M170 460 C185 380 250 310 320 220 C270 270 210 320 170 460Z" fill="#1a3020"/>
+      <path d="M170 220 C155 140 90 80 20 10 C70 50 130 110 170 220Z" fill="#1a3020"/>
+      <path d="M170 220 C185 140 250 80 320 10 C270 50 210 110 170 220Z" fill="#1a3020"/>
+    </svg>
+  </div>
+
+  <div style="max-width:1100px; margin:0 auto; position:relative; z-index:1;">
+    <!-- Header -->
+    <div style="text-align:center; margin-bottom:56px;">
+      <div style="display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:18px;">
+        <span style="display:block; width:48px; height:1px; background:#c4a84f;"></span>
+        <span style="font-family:'Inter',sans-serif; font-size:10px; font-weight:700; letter-spacing:4px; color:#c4a84f; text-transform:uppercase;">VISÍTANOS</span>
+        <span style="display:block; width:48px; height:1px; background:#c4a84f;"></span>
+      </div>
+      <h2 style="font-family:'Playfair Display',serif; font-size:clamp(44px,6vw,72px); color:#1a3020; font-weight:700; line-height:1; margin-bottom:14px;">Nuestras oficinas</h2>
+      <p style="font-size:16px; color:#7a8c7a; font-family:'Inter',sans-serif; margin:0;">Un espacio para escucharte y acompañarte.</p>
     </div>
+
+    <!-- Tarjeta principal -->
+    <div style="display:grid; grid-template-columns:1fr 1.5fr; border-radius:20px; overflow:hidden; box-shadow:0 24px 80px rgba(0,0,0,.14); min-height:400px;">
+
+      <!-- Panel izquierdo verde -->
+      <div style="background:#1a3020; padding:52px 48px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
+        <!-- Decoración botánica dorada (fondo) -->
+        <div style="position:absolute; bottom:-30px; right:-30px; opacity:0.18; pointer-events:none;">
+          <svg width="260" height="300" viewBox="0 0 260 300" fill="none">
+            <path d="M220 300 C200 260 170 220 130 180" stroke="#c4a84f" stroke-width="1.8"/>
+            <path d="M130 180 C110 160 85 155 60 140" stroke="#c4a84f" stroke-width="1.2"/>
+            <path d="M130 180 C115 155 105 135 95 110" stroke="#c4a84f" stroke-width="1.2"/>
+            <path d="M60 140 C45 125 55 108 72 118 C66 126 60 133 60 140Z" fill="none" stroke="#c4a84f" stroke-width="1"/>
+            <path d="M95 110 C88 94 100 84 114 96 C107 101 95 106 95 110Z" fill="none" stroke="#c4a84f" stroke-width="1"/>
+            <path d="M160 220 C138 202 125 195 108 182" stroke="#c4a84f" stroke-width="1"/>
+            <path d="M108 182 C96 168 106 158 120 166 C115 172 108 177 108 182Z" fill="none" stroke="#c4a84f" stroke-width="1"/>
+            <path d="M180 250 C158 235 145 225 128 210" stroke="#c4a84f" stroke-width="1"/>
+            <path d="M128 210 C116 196 126 186 140 194 C135 200 128 205 128 210Z" fill="none" stroke="#c4a84f" stroke-width="1"/>
+            <path d="M220 300 C240 260 250 230 245 200" stroke="#c4a84f" stroke-width="1.5"/>
+            <path d="M245 200 C248 180 238 170 228 178" stroke="#c4a84f" stroke-width="1"/>
+          </svg>
+        </div>
+
+        <div>
+          <!-- Ícono pin -->
+          <div style="width:50px; height:50px; border-radius:50%; border:1.5px solid rgba(196,168,79,0.45); display:flex; align-items:center; justify-content:center; margin-bottom:32px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#c4a84f"/>
+            </svg>
+          </div>
+
+          <div style="font-family:'Inter',sans-serif; font-size:10px; font-weight:700; letter-spacing:3.5px; color:rgba(196,168,79,0.75); margin-bottom:16px; text-transform:uppercase;">RAÍZ · IRAPUATO</div>
+          <h3 style="font-family:'Playfair Display',serif; font-size:clamp(22px,2.2vw,34px); color:#fff; font-weight:700; line-height:1.15; margin-bottom:10px;">Paseo de las Fresas 166</h3>
+          <p style="font-size:14px; color:rgba(255,255,255,0.55); font-family:'Inter',sans-serif; margin-bottom:0;">Jardines de Irapuato, Gto.</p>
+        </div>
+
+        <a href="https://maps.google.com/maps?q=Paseo+de+las+Fresas+166,+Jardines+de+Irapuato,+Guanajuato" target="_blank"
+           style="display:inline-block; background:#c4a84f; color:#fff; font-family:'Inter',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; padding:16px 28px; border-radius:8px; text-decoration:none; margin-top:40px; width:fit-content;">
+          ABRIR EN GOOGLE MAPS &nbsp;→
+        </a>
+      </div>
+
+      <!-- Panel derecho: mapa -->
+      <div style="position:relative; min-height:400px;">
+        <iframe
+          src="https://maps.google.com/maps?q=Paseo+de+las+Fresas+166,+Jardines+de+Irapuato,+Guanajuato,+M%C3%A9xico&output=embed&z=17"
+          style="border:0; display:block; position:absolute; inset:0; width:100%; height:100%;"
+          allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Oficinas Raíz Inmobiliaria Bajío">
+        </iframe>
+      </div>
+
+    </div>
+
   </div>
 </section>
 
