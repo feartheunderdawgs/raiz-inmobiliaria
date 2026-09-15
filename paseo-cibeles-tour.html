@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paseo Cibeles — Recorrido Virtual</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#000;overflow:hidden;font-family:'Segoe UI',sans-serif;}
+canvas{display:block;}
+
+#intro{
+  position:fixed;inset:0;z-index:100;
+  background:linear-gradient(170deg,#0d1b2a 0%,#1a2a1a 60%,#0a0e0a 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity 1s ease;
+}
+#intro.hidden{opacity:0;pointer-events:none;}
+#intro h1{
+  font-size:clamp(32px,5vw,56px);font-weight:200;letter-spacing:0.2em;
+  color:#fff;text-transform:uppercase;margin-bottom:6px;
+}
+#intro h2{
+  font-size:clamp(11px,1.8vw,14px);font-weight:400;letter-spacing:0.5em;
+  color:#c9a96e;text-transform:uppercase;margin-bottom:28px;
+}
+.divider{width:50px;height:1px;background:#c9a96e;margin:0 auto 24px;}
+#intro p{color:#aaa;font-size:13px;letter-spacing:0.04em;max-width:380px;text-align:center;line-height:1.8;margin-bottom:40px;}
+#enter-btn{
+  background:none;border:1px solid #c9a96e;color:#c9a96e;
+  padding:14px 52px;font-size:12px;letter-spacing:0.35em;text-transform:uppercase;cursor:pointer;transition:all .3s;
+}
+#enter-btn:hover{background:#c9a96e;color:#000;}
+
+#click-prompt{
+  position:fixed;inset:0;z-index:50;
+  background:rgba(0,0,0,.82);backdrop-filter:blur(4px);
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  cursor:pointer;
+}
+#click-prompt.visible{display:flex;}
+#click-prompt h3{color:#fff;font-size:22px;font-weight:200;letter-spacing:.3em;text-transform:uppercase;margin-bottom:12px;}
+#click-prompt p{color:#c9a96e;font-size:12px;letter-spacing:.2em;}
+
+#hud{position:fixed;inset:0;pointer-events:none;z-index:10;}
+#zone-label{
+  position:absolute;top:20px;left:50%;transform:translateX(-50%);
+  background:rgba(0,0,0,.55);border:1px solid rgba(201,169,110,.4);
+  color:#c9a96e;padding:7px 22px;font-size:11px;letter-spacing:.3em;text-transform:uppercase;
+  backdrop-filter:blur(8px);transition:opacity .6s;white-space:nowrap;
+}
+#crosshair{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:14px;height:14px;
+}
+#crosshair::before,#crosshair::after{content:'';position:absolute;background:rgba(255,255,255,.65);}
+#crosshair::before{width:1px;height:14px;left:50%;top:0;}
+#crosshair::after{width:14px;height:1px;top:50%;left:0;}
+#fps{position:absolute;top:20px;right:20px;color:rgba(255,255,255,.3);font-size:10px;}
+.hint{
+  position:absolute;bottom:22px;left:50%;transform:translateX(-50%);
+  display:flex;gap:12px;
+}
+.kb{
+  background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.18);
+  color:rgba(255,255,255,.8);padding:5px 14px;font-size:11px;letter-spacing:.1em;backdrop-filter:blur(6px);border-radius:3px;
+}
+
+#pause{
+  position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+}
+#pause.on{display:flex;}
+#pause h2{color:#fff;font-size:24px;font-weight:200;letter-spacing:.3em;margin-bottom:12px;}
+#pause p{color:#aaa;font-size:12px;letter-spacing:.2em;}
+</style>
+</head>
+<body>
+
+<div id="intro">
+  <h1>Paseo Cibeles</h1>
+  <h2>Proyección · Recorrido Virtual</h2>
+  <div class="divider"></div>
+  <p>Explora cómo lucirá la privada al completarse el proyecto de jardinería y amenidades.</p>
+  <button id="enter-btn">Entrar a la Privada</button>
+</div>
+
+<div id="click-prompt">
+  <h3>Haz clic para entrar</h3>
+  <p>El cursor se ocultará — mueve el mouse para girar la cámara</p>
+</div>
+
+<div id="hud">
+  <div id="zone-label">Acceso Principal — Paseo Cibeles</div>
+  <div id="crosshair"></div>
+  <div id="fps"></div>
+  <div class="hint">
+    <span class="kb">W A S D · Mover</span>
+    <span class="kb">Mouse · Girar</span>
+    <span class="kb">ESC · Pausar</span>
+  </div>
+</div>
+
+<div id="pause">
+  <h2>PAUSA</h2>
+  <p>Clic en pantalla para continuar</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+'use strict';
+
+// ── RENDERER ─────────────────────────────────────────────────────────────────
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0xb8d4e8, 0.009);
+
+// ── PROCEDURAL TEXTURES ───────────────────────────────────────────────────────
+function mkCanvas(w,h,fn){
+  const c=document.createElement('canvas'); c.width=w; c.height=h;
+  fn(c.getContext('2d'),w,h);
+  const t=new THREE.CanvasTexture(c);
+  return t;
+}
+
+// Sky gradient texture
+const skyTex = mkCanvas(2,512,(ctx,w,h)=>{
+  const g=ctx.createLinearGradient(0,0,0,h);
+  g.addColorStop(0,'#1a4a8c');
+  g.addColorStop(0.35,'#4a8ec8');
+  g.addColorStop(0.65,'#89c4e1');
+  g.addColorStop(1,'#d4eaf7');
+  ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
+});
+skyTex.needsUpdate=true;
+// Use as scene background via large sphere
+const skySphere = new THREE.Mesh(
+  new THREE.SphereGeometry(380,32,16),
+  new THREE.MeshBasicMaterial({map:skyTex,side:THREE.BackSide})
+);
+scene.add(skySphere);
+
+// Adoquín / dark paver texture
+const paverTex = mkCanvas(512,512,(ctx)=>{
+  ctx.fillStyle='#2e2520'; ctx.fillRect(0,0,512,512);
+  const bw=56,bh=28;
+  for(let row=0;row<512/bh+1;row++){
+    for(let col=-1;col<512/bw+1;col++){
+      const ox=(row%2)*(bw/2);
+      const x=col*bw+ox, y=row*bh;
+      const l=14+Math.random()*8;
+      ctx.fillStyle=`hsl(22,${12+Math.random()*8}%,${l}%)`;
+      ctx.fillRect(x+1.5,y+1.5,bw-3,bh-3);
+    }
+  }
+});
+paverTex.wrapS=paverTex.wrapT=THREE.RepeatWrapping;
+
+// Grass texture
+const grassTex = mkCanvas(256,256,(ctx)=>{
+  ctx.fillStyle='#5a8c36'; ctx.fillRect(0,0,256,256);
+  for(let i=0;i<3000;i++){
+    const x=Math.random()*256,y=Math.random()*256;
+    ctx.fillStyle=`hsl(${105+Math.random()*20},${50+Math.random()*20}%,${28+Math.random()*14}%)`;
+    ctx.fillRect(x,y,1+Math.random()*2,1+Math.random()*3);
+  }
+});
+grassTex.wrapS=grassTex.wrapT=THREE.RepeatWrapping;
+
+// Stucco / white wall texture
+const stuccoTex = mkCanvas(256,256,(ctx)=>{
+  ctx.fillStyle='#f0ece0'; ctx.fillRect(0,0,256,256);
+  for(let i=0;i<8000;i++){
+    const x=Math.random()*256,y=Math.random()*256;
+    const b=235+Math.random()*20;
+    ctx.fillStyle=`rgb(${b},${b-2},${b-8})`;
+    ctx.fillRect(x,y,1,1);
+  }
+});
+stuccoTex.wrapS=stuccoTex.wrapT=THREE.RepeatWrapping;
+
+// Corten steel (rust) texture
+const cortenTex = mkCanvas(256,256,(ctx)=>{
+  ctx.fillStyle='#7a3a10'; ctx.fillRect(0,0,256,256);
+  for(let i=0;i<6000;i++){
+    const x=Math.random()*256,y=Math.random()*256;
+    const s=Math.random()>0.5?1:2;
+    ctx.fillStyle=`hsl(${15+Math.random()*25},${55+Math.random()*25}%,${20+Math.random()*20}%)`;
+    ctx.fillRect(x,y,s,s+Math.random()*6);
+  }
+});
+cortenTex.wrapS=cortenTex.wrapT=THREE.RepeatWrapping;
+
+// Sidewalk / concrete
+const concTex = mkCanvas(256,256,(ctx)=>{
+  ctx.fillStyle='#c8c0aa'; ctx.fillRect(0,0,256,256);
+  for(let i=0;i<5000;i++){
+    const x=Math.random()*256,y=Math.random()*256;
+    const b=185+Math.random()*30;
+    ctx.fillStyle=`rgb(${b},${b-3},${b-10})`;
+    ctx.fillRect(x,y,1,1);
+  }
+  // expansion joints
+  ctx.strokeStyle='rgba(0,0,0,0.15)'; ctx.lineWidth=1;
+  for(let i=0;i<256;i+=64){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,256);ctx.stroke();}
+  for(let i=0;i<256;i+=64){ctx.beginPath();ctx.moveTo(0,i);ctx.lineTo(256,i);ctx.stroke();}
+});
+concTex.wrapS=concTex.wrapT=THREE.RepeatWrapping;
+
+// Rock texture
+const rockTex = mkCanvas(128,128,(ctx)=>{
+  ctx.fillStyle='#8a7a6a'; ctx.fillRect(0,0,128,128);
+  for(let i=0;i<3000;i++){
+    const x=Math.random()*128,y=Math.random()*128;
+    const b=100+Math.random()*40;
+    ctx.fillStyle=`rgb(${b+10},${b},${b-10})`;
+    ctx.fillRect(x,y,1+Math.random()*2,1+Math.random()*2);
+  }
+});
+rockTex.wrapS=rockTex.wrapT=THREE.RepeatWrapping;
+
+// ── MATERIALS ─────────────────────────────────────────────────────────────────
+function mat(color, map, ru, rv){
+  const m=new THREE.MeshLambertMaterial({color});
+  if(map){m.map=map.clone(); m.map.repeat.set(ru||4,rv||4); m.needsUpdate=true;}
+  return m;
+}
+const M={
+  ground: mat(0xffffff, grassTex, 40, 40),
+  paver:  mat(0xffffff, paverTex, 20, 80),
+  sidewalk: mat(0xffffff, concTex, 6, 30),
+  wall:   mat(0xffffff, stuccoTex, 4, 2),
+  roof:   mat(0xd0ccc0),
+  corten: mat(0xffffff, cortenTex, 2, 4),
+  cortenB:mat(0xffffff, cortenTex, 4, 1),
+  stone:  mat(0xffffff, rockTex, 2, 2),
+  trunk:  mat(0x6b4c2a),
+  palmTr: mat(0x7a6040),
+  canopy: mat(0x2d6e2d),
+  palmFr: mat(0x3a8c3a),
+  agave:  mat(0x5a8060),
+  cactus: mat(0x4a7a4a),
+  rock:   mat(0xffffff,rockTex,1,1),
+  water:  new THREE.MeshLambertMaterial({color:0x3a8ab8,transparent:true,opacity:.82}),
+  glass:  new THREE.MeshLambertMaterial({color:0x7ab0d8,transparent:true,opacity:.65}),
+  door:   mat(0x5a4a38),
+  fence:  mat(0x303030),
+  lamp:   new THREE.MeshLambertMaterial({color:0xffeecc,emissive:0xffcc88,emissiveIntensity:.5}),
+  metal:  mat(0x444444),
+  yellow: mat(0xf0c030),
+  hedge:  mat(0x3a7a2a),
+  garden: mat(0x5aaa3a),
+  sign:   mat(0xf5f0e8,null),
+};
+
+// ── LIGHTS ────────────────────────────────────────────────────────────────────
+const sun=new THREE.DirectionalLight(0xfff5d8,2.4);
+sun.position.set(80,100,60);
+sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);
+sun.shadow.camera.near=1; sun.shadow.camera.far=350;
+[-150,150].forEach(v=>{sun.shadow.camera.left=sun.shadow.camera.bottom=-v; sun.shadow.camera.right=sun.shadow.camera.top=v;});
+sun.shadow.camera.left=-150; sun.shadow.camera.right=150;
+sun.shadow.camera.top=150; sun.shadow.camera.bottom=-150;
+scene.add(sun);
+scene.add(new THREE.AmbientLight(0x90b8d8,.65));
+scene.add(new THREE.HemisphereLight(0x89c4e1,0x806040,.55));
+
+// warm fill from opposite side
+const fill=new THREE.DirectionalLight(0xd8c090,.4);
+fill.position.set(-60,40,-30); scene.add(fill);
+
+// ── GEOMETRY HELPERS ──────────────────────────────────────────────────────────
+function add(geo,mat,x,y,z,rx,ry,rz){
+  const m=new THREE.Mesh(geo,mat);
+  m.position.set(x,y,z);
+  if(rx) m.rotation.x=rx;
+  if(ry) m.rotation.y=ry;
+  if(rz) m.rotation.z=rz;
+  m.castShadow=true; m.receiveShadow=true;
+  scene.add(m); return m;
+}
+const B=(w,h,d)=>new THREE.BoxGeometry(w,h,d);
+const C=(rt,rb,h,s)=>new THREE.CylinderGeometry(rt,rb,h,s||12);
+const S=(r,s)=>new THREE.SphereGeometry(r,s||10,s||10);
+const KN=(r,h,s)=>new THREE.ConeGeometry(r,h,s||8);
+
+// shorthand
+function bx(w,h,d,m,x,y,z,ry){return add(B(w,h,d),m,x,y,z,0,ry||0,0);}
+function cy(rt,rb,h,m,x,y,z,s){return add(C(rt,rb,h,s),m,x,y,z);}
+function sp(r,m,x,y,z){return add(S(r),m,x,y,z);}
+function cn(r,h,m,x,y,z){return add(KN(r,h),m,x,y,z);}
+
+// ── GROUND ────────────────────────────────────────────────────────────────────
+add(new THREE.PlaneGeometry(500,500), M.ground, 0,0,0, -Math.PI/2,0,0).receiveShadow=true;
+
+// Main boulevard pavers (14m wide, 230m long Z=10 to Z=-220)
+bx(14,.06,230, M.paver, 0,.03,-105);
+// Banquetas/sidewalks
+bx(3,.06,230, M.sidewalk, -8.5,.03,-105);
+bx(3,.06,230, M.sidewalk,  8.5,.03,-105);
+
+// ── ENTRANCE GATE — CORTEN STEEL (Z=0, player starts at Z=12) ────────────────
+// Outer approach: low stone perimeter walls (like photos)
+bx(0.35,2.2,20, M.stone, -14,1.1, 10);
+bx(0.35,2.2,20, M.stone,  14,1.1, 10);
+
+// Stone pillar caps on outer walls
+bx(0.7,0.25,0.7, M.stone, -14,2.35, 10);
+bx(0.7,0.25,0.7, M.stone,  14,2.35, 10);
+
+// CORTEN STEEL PILLARS — 4 main (matched to PDF)
+function cortenPillar(x,z,w,h){
+  bx(w,h,w, M.corten, x, h/2, z);
+  bx(w+0.1,.18,w+0.1, M.cortenB, x, h+0.09, z); // cap
+}
+// Inner pair (main gate pillars, very tall)
+cortenPillar(-5.5, 0, 1.0, 9);
+cortenPillar( 5.5, 0, 1.0, 9);
+// Outer pair
+cortenPillar(-9.0, 0, 0.8, 7);
+cortenPillar( 9.0, 0, 0.8, 7);
+
+// Horizontal canopy beam between inner pillars
+bx(12,.25,.6, M.corten, 0,9.12,0);
+// Flat canopy roof
+bx(13,.12,3.0, M.metal, 0,9.30,0);
+// Under-canopy panel (with name)
+bx(7,.9,.08, M.sign, 0,8.55,0);
+
+// Side connecting beams inner→outer
+bx(4,.15,.3, M.corten, -7.25,7.0,0);
+bx(4,.15,.3, M.corten,  7.25,7.0,0);
+
+// Low decorative walls connecting pillars to sidewalk
+bx(2.2,.9,.35, M.stone, -7.25,.45,0);
+bx(2.2,.9,.35, M.stone,  7.25,.45,0);
+
+// ── ENTRANCE ISLAND & ESPEJO DE AGUA (Z=-8) ───────────────────────────────────
+// Espejo de agua (reflecting pool) — at Z=-8
+cy(7,7,.1, M.water, 0,.05,-8,32);
+// Rim of espejo
+cy(7.4,7.4,.25, M.sidewalk, 0,.12,-8,32);
+
+// Central raised island inside espejo
+cy(3.2,3.5,.55, M.sidewalk, 0,.38,-8,16);
+cy(3.0,3.0,.06, M.garden, 0,.65,-8,16);
+
+// Large boulders on island
+sp(0.85, M.rock, -0.8, .75, -7.8);
+sp(1.05, M.rock,  0.6, .85, -8.4);
+sp(0.7,  M.rock,  1.1, .65, -7.5);
+sp(0.6,  M.rock, -1.3, .65, -8.5);
+sp(0.5,  M.rock,  0.2, 1.0, -7.9);
+
+// Tall dramatic cactus on island (matching PDF icónico sculpture)
+function bigCactus(x,z){
+  cy(.16,.20,2.2, M.cactus, x,.75+1.1,z,8);       // main trunk
+  // arms
+  cy(.08,.10,.9, M.cactus, x+.3, 1.8+.45,z).rotation.z=-Math.PI*.25;
+  cy(.08,.10,.9, M.cactus, x-.3, 1.8+.45,z).rotation.z= Math.PI*.25;
+}
+bigCactus(-.3,-8.2);
+bigCactus( .8,-7.6);
+// Smaller agave-type plants
+function agave(x,z){
+  for(let i=0;i<7;i++){
+    const a=(i/7)*Math.PI*2;
+    const leaf=add(KN(.1,1.0,4),M.agave,x+Math.cos(a)*.25,.45,z+Math.sin(a)*.25);
+    leaf.rotation.z=Math.PI*.22;
+    leaf.rotation.y=a;
+  }
+}
+agave(-1.2,-8.6); agave(.3,-9.0); agave(1.0,-7.5);
+
+// ── PALM TREES — BOTH SIDES OF BOULEVARD ──────────────────────────────────────
+function palmTree(x,z){
+  cy(.18,.22,8, M.palmTr, x,4,z);
+  for(let i=0;i<7;i++){
+    const a=(i/7)*Math.PI*2;
+    const f=add(KN(.55,2.8,5),M.palmFr,x+Math.cos(a)*1.3,8.2,z+Math.sin(a)*1.3);
+    f.rotation.z=Math.PI*.28; f.rotation.y=a;
+  }
+  sp(.35,M.palmFr,x,8.6,z);
+}
+for(let z=-12;z>=-210;z-=13){
+  palmTree(-6.5,z); palmTree(6.5,z);
+}
+
+// ── SHADE TREES ───────────────────────────────────────────────────────────────
+function shadeTree(x,z,h,r){
+  h=h||9; r=r||4;
+  cy(.32,.4,h,M.trunk,x,h/2,z);
+  sp(r,M.canopy,x,h+r*.55,z);
+}
+// Park LEFT side
+[-15,-28,-18,-22,-20,-16,-24,-19,-17,-21,-15,-25].forEach((x,i)=>{
+  const z = -20-i*15;
+  shadeTree(x,z,8+Math.random()*3,3.5+Math.random()*1.2);
+});
+shadeTree(-32,-62,9,4.5); shadeTree(-28,-78,8,4); shadeTree(-35,-95,10,4.5);
+shadeTree(-24,-110,8,3.8); shadeTree(-30,-125,9,4); shadeTree(-22,-145,8,3.5);
+
+// Right side sparse trees near houses
+[[-30],[-55],[-85],[-115],[-145]].forEach(([z])=>{ shadeTree(20,z,7,3); });
+
+// ── GLORIETA 1 (Z=-55) ────────────────────────────────────────────────────────
+const G1=-55;
+cy(11,11.5,.55, M.sidewalk, 0,.28,G1,32);
+cy(7.5,7.5,.4, M.garden, 0,.5,G1,32);
+shadeTree(0,G1,13,6); // iconic central tree
+shadeTree(-2.5,G1-3,9,4); shadeTree(2,G1+3,8,3.8);
+for(let i=0;i<8;i++){const a=(i/8)*Math.PI*2; agave(Math.cos(a)*4.5,G1+Math.sin(a)*4.5);}
+for(let i=0;i<14;i++){const a=(i/14)*Math.PI*2; sp(.5,M.hedge,Math.cos(a)*9.2,.5,G1+Math.sin(a)*9.2);}
+// cross paths
+bx(11,.05,1.4,M.sidewalk,0,.53,G1);
+bx(1.4,.05,11,M.sidewalk,0,.53,G1);
+// intersection roads
+bx(15,.06,20, M.paver, -17,.02,G1);
+bx(15,.06,20, M.paver,  17,.02,G1);
+// crosswalk stripes
+for(let i=-2;i<=2;i++){
+  bx(.45,.07,3,M.yellow,-9+i*1.6,.03,G1-13.5);
+  bx(.45,.07,3,M.yellow,-9+i*1.6,.03,G1+13.5);
+}
+
+// ── GLORIETA 2 / FUENTE (Z=-140) ──────────────────────────────────────────────
+const G2=-140;
+cy(9,9.5,.5,M.sidewalk,0,.25,G2,32);
+cy(6,6,.12,M.water,0,.44,G2,32);
+cy(.3,.3,3,M.corten,0,1.5,G2);
+sp(1,M.cactus,0,3.3,G2);
+for(let i=0;i<10;i++){const a=(i/10)*Math.PI*2; sp(.6,M.garden,Math.cos(a)*7.5,.6,G2+Math.sin(a)*7.5);}
+shadeTree(-3,G2-4,8,4); shadeTree(3,G2+4,7,3.5);
+
+// ── HOUSES (right side, Z=-20 to -215) ────────────────────────────────────────
+function house(x,z){
+  const hx=x>0?x+5:x-5;
+  // ground floor
+  bx(10,3.2,10,M.wall,hx,1.6,z);
+  // 2nd floor
+  bx(10,3.0,10,M.wall,hx,4.85,z);
+  // flat roof + parapet
+  bx(10.3,.35,10.3,M.roof,hx,6.52,z);
+  bx(10.3,.55,.15,M.roof,hx,6.8,z+(10/2+.08));   // front parapet
+  bx(10.3,.55,.15,M.roof,hx,6.8,z-(10/2+.08));
+  // windows G floor
+  bx(1.3,1.3,.1,M.glass,hx-2.2,1.8,z+5.05);
+  bx(1.3,1.3,.1,M.glass,hx+1.5,1.8,z+5.05);
+  // door
+  bx(1.1,2.3,.1,M.door,hx-.3,1.15,z+5.05);
+  // 2nd floor windows
+  bx(1.3,1.1,.1,M.glass,hx-2.2,4.9,z+5.05);
+  bx(1.3,1.1,.1,M.glass,hx+1.5,4.9,z+5.05);
+  // terrace railing
+  bx(10,.1,.1,M.metal,hx,3.27,z+5.06);
+  // hedges in front
+  bx(2,.85,.8,M.hedge,hx+3.5,.42,z+5.7);
+  bx(2,.85,.8,M.hedge,hx-3.5,.42,z+5.7);
+}
+const houseZs=[-20,-43,-66,-89,-112,-163,-186,-209];
+houseZs.forEach(z=>{ if(Math.abs(z-G1)>14 && Math.abs(z-G2)>12) house(13,z); });
+
+// ── PARK AMENITIES (left side) ────────────────────────────────────────────────
+// Zone 1 — Juegos infantiles (Z=-30)
+cy(.06,.06,3,M.metal,-22,1.5,-32); cy(.06,.06,3,M.metal,-19,1.5,-32);
+bx(3.2,.08,.08,M.metal,-20.5,3,-32); // top bar swing
+bx(3.5,.12,2.5,M.corten,-17,1.5,-38,-.35); // slide
+sp(.5,M.yellow,-20,.5,-42); // sandbox marker
+bx(4,.2,4,M.sidewalk,-20,.1,-45);
+
+// Zone 2 — Hammocks (Z=-75)
+bx(.12,2.5,.12,M.trunk,-19,1.25,-76); bx(.12,2.5,.12,M.trunk,-23,1.25,-76);
+
+// Zone 3 — Foro (Z=-108)
+bx(9,.45,6,M.sidewalk,-22,.22,-108);
+for(let i=0;i<4;i++) bx(2.5,.35,.5,M.trunk,-18,.35,-103-i*1.6);
+
+// Coworking/café building (Z=-158)
+bx(9,3.8,8,M.wall,-29,1.9,-158);
+bx(9.2,.28,8.2,M.roof,-29,3.94,-158);
+bx(1.6,2,.1,M.glass,-28,1.9,-154.05);
+bx(1.6,2,.1,M.glass,-30.5,1.9,-154.05);
+bx(1.1,2.3,.1,M.door,-29,1.15,-154.05);
+
+// Dog park (Z=-175)
+for(let i=0;i<9;i++){
+  bx(.1,1.2,.1,M.fence,-15-i*2,.6,-170);
+  bx(.1,1.2,.1,M.fence,-15-i*2,.6,-182);
+}
+bx(.1,1.2,13,M.fence,-15,.6,-176); bx(.1,1.2,13,M.fence,-33,.6,-176);
+bx(17,.06,12,M.grass,-24,.03,-176);
+
+// ── STREET LIGHTS ─────────────────────────────────────────────────────────────
+function streetLight(x,z){
+  cy(.07,.09,5.5,M.metal,x,2.75,z);
+  const arm=new THREE.Mesh(C(.04,.04,1.8,6),M.metal);
+  arm.rotation.z=Math.PI/2; arm.position.set(x+(x>0?0.9:-0.9),5.6,z);
+  scene.add(arm);
+  sp(.28,M.lamp,x+(x>0?1.8:-1.8),5.6,z);
+  // Point light for glow (low intensity, limited range)
+  const pl=new THREE.PointLight(0xffeecc,.25,12);
+  pl.position.set(x+(x>0?1.8:-1.8),5.5,z);
+  scene.add(pl);
+}
+for(let z=-10;z>=-205;z-=22){ streetLight(-7.8,z); streetLight(7.8,z); }
+
+// ── FAR BOUNDARY ─────────────────────────────────────────────────────────────
+bx(45,3,.6,M.stone,0,1.5,-220);
+shadeTree(-6,-216,9,4); shadeTree(6,-216,8,3.8);
+shadeTree(-14,-212,8,3.5); shadeTree(14,-212,9,4);
+
+// ── CAMERA & PLAYER ───────────────────────────────────────────────────────────
+const camera=new THREE.PerspectiveCamera(68,innerWidth/innerHeight,.1,380);
+camera.position.set(0,1.75,12);
+
+let yaw=Math.PI, pitch=0; // facing INTO the development (negative Z)
+camera.rotation.order='YXZ';
+
+// ── POINTER LOCK ──────────────────────────────────────────────────────────────
+let locked=false;
+const introEl=document.getElementById('intro');
+const pauseEl=document.getElementById('pause');
+const clickPrompt=document.getElementById('click-prompt');
+
+function lock(){ renderer.domElement.requestPointerLock(); }
+
+document.addEventListener('pointerlockchange',()=>{
+  locked=!!document.pointerLockElement;
+  if(locked){ pauseEl.classList.remove('on'); clickPrompt.classList.remove('visible'); }
+  else { if(!introEl.classList.contains('hidden')) return; pauseEl.classList.add('on'); }
+});
+
+document.addEventListener('mousemove',e=>{
+  if(!locked) return;
+  yaw  -= e.movementX*.0018;
+  pitch -= e.movementY*.0018;
+  pitch=Math.max(-Math.PI/2+.05,Math.min(Math.PI/2-.05,pitch));
+});
+
+document.getElementById('enter-btn').addEventListener('click',()=>{
+  introEl.classList.add('hidden');
+  setTimeout(()=>{
+    introEl.style.display='none';
+    clickPrompt.classList.add('visible');
+  },900);
+});
+
+clickPrompt.addEventListener('click',()=>{
+  clickPrompt.classList.remove('visible');
+  lock();
+});
+
+pauseEl.addEventListener('click',()=>{ lock(); });
+
+// ── INPUT ─────────────────────────────────────────────────────────────────────
+const keys={};
+document.addEventListener('keydown',e=>{ keys[e.code]=true; });
+document.addEventListener('keyup',  e=>{ keys[e.code]=false; });
+
+// ── COLLIDERS ─────────────────────────────────────────────────────────────────
+const COLS=[
+  // entrance pillars
+  {x:-5.5,z:0,r:1.2},{x:5.5,z:0,r:1.2},{x:-9,z:0,r:1.2},{x:9,z:0,r:1.2},
+  // outer walls
+  {x:-14,z:10,r:1},{x:14,z:10,r:1},
+  // espejo de agua + island
+  {x:0,z:-8,r:7.6},
+  // glorieta 1
+  {x:0,z:G1,r:11.8},
+  // glorieta 2
+  {x:0,z:G2,r:9.8},
+  // houses right
+  {x:18,z:-20,r:6},{x:18,z:-43,r:6},{x:18,z:-66,r:6},
+  {x:18,z:-89,r:6},{x:18,z:-112,r:6},
+  {x:18,z:-163,r:6},{x:18,z:-186,r:6},{x:18,z:-209,r:6},
+  // coworking
+  {x:-29,z:-158,r:5.5},
+  // end wall
+  {x:0,z:-220,r:3},
+];
+function collide(x,z){
+  if(x<-22||x>22||z>15||z<-224) return true;
+  for(const c of COLS){const dx=x-c.x,dz=z-c.z;if(dx*dx+dz*dz<c.r*c.r)return true;}
+  return false;
+}
+
+// ── ZONES ─────────────────────────────────────────────────────────────────────
+const ZONES=[
+  {z:14, l:'Acceso Principal — Paseo Cibeles'},
+  {z:-5, l:'Espejo de Agua · Escultura Icónica'},
+  {z:-18,l:'Boulevard Principal'},
+  {z:-40,l:'Alameda de Palmeras'},
+  {z:G1, l:'Glorieta · El Valle — Juegos y Arboreto'},
+  {z:-90,l:'Zona Planicie — Arboreto Urbano'},
+  {z:-118,l:'Zona Lomerío — Foro al Aire Libre'},
+  {z:G2, l:'Glorieta Principal · Jardín de Polinizadores'},
+  {z:-160,l:'Coworking · Café al Aire Libre'},
+  {z:-172,l:'Dog Park — Jardín de Mascotas'},
+  {z:-205,l:'Fondo de la Privada'},
+];
+const zoneLbl=document.getElementById('zone-label');
+let curZone='';
+function updateZone(pz){
+  let lbl=ZONES[0].l;
+  for(const z of ZONES){if(pz<z.z)lbl=z.l;}
+  if(lbl!==curZone){curZone=lbl;zoneLbl.textContent=lbl;}
+}
+
+// ── HEAD BOB ──────────────────────────────────────────────────────────────────
+let bobT=0;
+const SPEED=6.5, BOB_S=7.5, BOB_A=.055;
+
+// ── FPS ──────────────────────────────────────────────────────────────────────
+const fpsEl=document.getElementById('fps');
+let fCount=0,fTime=performance.now();
+
+// ── ANIMATED WATER ────────────────────────────────────────────────────────────
+// slight shimmer via material color oscillation
+let waterT=0;
+
+// ── LOOP ─────────────────────────────────────────────────────────────────────
+const clock=new THREE.Clock();
+function animate(){
+  requestAnimationFrame(animate);
+  const dt=Math.min(clock.getDelta(),.05);
+  waterT+=dt;
+  M.water.color.setHSL(.58,.55,.35+Math.sin(waterT*1.8)*.04);
+
+  if(locked){
+    const s=Math.sin(yaw),c=Math.cos(yaw);
+    let dx=0,dz=0;
+    if(keys['KeyW']||keys['ArrowUp'])   {dx-=s;dz-=c;}
+    if(keys['KeyS']||keys['ArrowDown']) {dx+=s;dz+=c;}
+    if(keys['KeyA']||keys['ArrowLeft']) {dx-=c;dz+=s;}
+    if(keys['KeyD']||keys['ArrowRight']){dx+=c;dz-=s;}
+    const len=Math.sqrt(dx*dx+dz*dz), moving=len>.01;
+    if(moving){dx/=len;dz/=len;}
+
+    const nx=camera.position.x+dx*SPEED*dt;
+    const nz=camera.position.z+dz*SPEED*dt;
+    if(!collide(nx,camera.position.z)) camera.position.x=nx;
+    if(!collide(camera.position.x,nz)) camera.position.z=nz;
+
+    if(moving){
+      bobT+=dt*BOB_S;
+      camera.position.y=1.75+Math.sin(bobT)*BOB_A;
+    } else {
+      camera.position.y+=(1.75-camera.position.y)*.14;
+    }
+    camera.rotation.y=yaw; camera.rotation.x=pitch;
+    updateZone(camera.position.z);
+  }
+
+  fCount++;
+  const now=performance.now();
+  if(now-fTime>=1000){fpsEl.textContent=fCount+' fps';fCount=0;fTime=now;}
+
+  renderer.render(scene,camera);
+}
+
+window.addEventListener('resize',()=>{
+  camera.aspect=innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+});
+
+animate();
+</script>
+</body>
+</html>
