@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="./images/android-chrome-512x512.png"/>
   <link rel="apple-touch-icon" href="./images/android-chrome-512x512.png"/>
   <meta name="description" content="Lotes industriales en venta en Ciudad Industrial de Irapuato, Guanajuato. 2,285 m² y 2,195 m². Zona con alta actividad industrial y logística. Raíz Inmobiliaria Bajío."/>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet"/>
   <style>
     :root {
       --verde: #1a3020;
@@ -60,19 +60,31 @@
     }
     .hero-tag::before { content:''; display:block; width:32px; height:1px; background:var(--dorado); }
     .hero-title {
-      font-family:'Playfair Display',serif;
-      font-size:clamp(38px,4.5vw,60px);
-      font-weight:700; line-height:1.05;
-      color:#fff; margin-bottom:10px;
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:clamp(60px,7.5vw,96px);
+      font-weight:900; line-height:0.95;
+      letter-spacing:-1px; text-transform:uppercase;
+      color:#fff; margin-bottom:14px;
+      animation:heroFadeUp .9s ease both;
     }
-    .hero-title em { font-style:italic; font-weight:400; color:var(--dorado); display:block; }
+    .hero-title em {
+      font-style:normal; font-weight:800;
+      color:var(--dorado); display:block;
+      letter-spacing:-1px;
+    }
+    @keyframes heroFadeUp {
+      from { opacity:0; transform:translateY(36px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
     .hero-location {
       font-size:13px; color:var(--t3); letter-spacing:1px;
       margin-bottom:36px; text-transform:uppercase;
+      animation:heroFadeUp .9s .15s ease both;
     }
     .hero-desc {
-      font-size:15px; color:var(--t2); line-height:1.8;
-      max-width:420px; margin-bottom:44px;
+      font-size:18px; color:var(--t2); line-height:1.8;
+      max-width:440px; margin-bottom:44px;
+      animation:heroFadeUp .9s .25s ease both;
     }
     .btn-wa {
       display:inline-flex; align-items:center; gap:10px;
@@ -366,7 +378,7 @@
   <div class="hero-content">
     <div class="hero-tag">Lotes en venta</div>
     <h1 class="hero-title">
-      Terreno industrial
+      Terreno
       <em>Ciudad Industrial</em>
     </h1>
     <p class="hero-location">Irapuato · Guanajuato · México</p>
