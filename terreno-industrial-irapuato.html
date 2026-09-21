@@ -341,9 +341,9 @@
     @media(max-width:768px){
       nav { padding:16px 24px; }
       .hero { grid-template-columns:1fr; min-height:auto; }
-      .hero-img { height:75vw; }
-      .hero-img img { object-position:center center; }
-      .hero-img::after { background:linear-gradient(to top, #0f1e0a 20%, transparent 100%); }
+      .hero-img { height:auto; }
+      .hero-img img { height:auto; object-fit:contain; object-position:center; background:#060e04; }
+      .hero-img::after { background:linear-gradient(to top, #0f1e0a 15%, transparent 100%); }
       .hero-content { padding:36px 24px; }
       .specs-bar { padding:28px 24px; flex-wrap:wrap; gap:20px; }
       .spec-item { border-right:none; border-bottom:1px solid rgba(196,168,79,.1); padding-bottom:16px; }
