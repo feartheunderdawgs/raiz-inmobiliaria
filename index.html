@@ -640,6 +640,7 @@
         <label class="vender-lbl">Tipo de propiedad</label>
         <div class="tipo-grid">
           <button type="button" class="tipo-btn" onclick="selTipo(this,'Casa')">🏠 Casa</button>
+          <button type="button" class="tipo-btn" onclick="selTipo(this,'Departamento')">🏢 Departamento</button>
           <button type="button" class="tipo-btn" onclick="selTipo(this,'Terreno')">🌱 Terreno</button>
           <button type="button" class="tipo-btn" onclick="selTipo(this,'Local')">🏪 Local</button>
         </div>
@@ -908,7 +909,7 @@ function enviarWA(e) {
   const nombre = document.getElementById('v-nombre').value.trim();
   const tipo   = document.getElementById('v-tipo').value;
 
-  const msg = `Hola me llamo ${nombre} 👋 tengo una Casa/Terreno y quisiera que me ayudaran a venderlo. Tipo: ${tipo}
+  const msg = `Hola me llamo ${nombre} 👋 tengo una propiedad y quisiera que me ayudaran a venderla. Tipo: ${tipo}
 
 ¡Quedo en espera, gracias! 😊
 🔑 CÓDIGO: RAIZWEB`;
